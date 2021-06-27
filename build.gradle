@@ -134,9 +134,8 @@ task deployNodes(type: net.corda.plugins.Cordform, dependsOn: ['jar']) {
             address("localhost:10005")
             adminAddress("localhost:10045")
         }
-        sshd {
-            port = 2222
-        }
+        // Starts an internal SSH server providing a management shell on the node.
+        sshdPort 2222
     }
     node {
         name "O=Borrower,L=Berlin,C=DE"
@@ -157,8 +156,7 @@ task deployNodes(type: net.corda.plugins.Cordform, dependsOn: ['jar']) {
             address("localhost:10009")
             adminAddress("localhost:10049")
         }
-        sshd {
-            port = 2223
-        }
+        // Starts an internal SSH server providing a management shell on the node.
+        sshdPort 2223
     }
 }
