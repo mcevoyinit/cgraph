@@ -1,0 +1,52 @@
+mutation {
+  addMember(input: [
+      {
+          id: "member2"
+        	cordaNodeName: "O=Borrower,L=Bangkok,C=TH"
+          lended: {
+            id: "0x0"
+            value: "2"
+            currency: {
+              id: "alpha"
+            }
+            borrower: {
+              id: "0x0"
+            }
+            lender: {
+              id: "0x5"
+            }
+          }
+          borrowed: {
+            id: "0x1"
+            value: "3"
+            currency: {
+              id: "beta"
+            }
+            borrower: {
+              id: "0x0"
+            }
+            lender: {
+              id: "0x5"
+            }
+          }
+        	balances: {
+            id: "balance0"
+          }
+      }
+
+  ]) {
+    member {
+      id
+      cordaNodeName
+      lended {
+        id
+      }
+      borrowed {
+        id
+      }
+      balances {
+        id
+      }
+    }
+  }
+}

@@ -1,0 +1,4 @@
+type Mutation {
+    invokeFlow(req: String!, res: String!): ID! #@lambda
+}
+

@@ -1,0 +1,28 @@
+type IOU {
+  id: String! @id
+  value: String!
+  currency: Currency!
+  lender: Member!
+  borrower: Member!
+}
+
+type Member {
+  id: String! @id
+  cordaNodeName: String
+  borrowed: [IOU] @hasInverse(field: "borrower")
+  lended: [IOU] @hasInverse(field: "lender")
+  balances: [Balance] @hasInverse(field: "holder")
+}
+
+type Balance {
+  id: String! @id
+  holder: Member,
+  value: String
+  currency: Currency
+}
+
+type Currency {
+  id: String! @id
+  name: String,
+  isoCode: String
+}
