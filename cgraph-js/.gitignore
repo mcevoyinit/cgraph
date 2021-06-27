@@ -20,3 +20,7 @@ temp-clone/
 site/
 docs/index.md
 /local.properties
+
+node_modules
+
+package-lock.json

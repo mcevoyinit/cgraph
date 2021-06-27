@@ -65,7 +65,7 @@ function issueBalanceFlow(isoCode, value) {
 }
 
 function issueIOUFlow(iouValue, currencyName, borrowerX500Name ) {
-    return braid.iouService.issueCurrencyFlow(iouValue, currencyName, borrowerX500Name)
+    return braid.iouService.issueIOUFlow(iouValue, currencyName, borrowerX500Name)
 }
 
 function invokePostGraphQLFlow(graphql) {
