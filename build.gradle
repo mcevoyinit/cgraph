@@ -96,7 +96,7 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
     }
 }
 
-task deployNodes(type: net.corda.plugins.Cordform, dependsOn: ['jar']) {
+task deployCGraph(type: net.corda.plugins.Cordform, dependsOn: ['jar']) {
     directory "./build/nodes"
     nodeDefaults {
         projectCordapp {
