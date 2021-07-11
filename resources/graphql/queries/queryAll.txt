@@ -1,0 +1,49 @@
+query {
+  #All currencies
+  queryCurrency {
+    id
+    isoCode
+    name
+  }
+  #All balances, with linked currencies
+  queryBalance {
+    id
+    value
+    currency {
+      id
+      name
+      isoCode
+    }
+  }
+  #All IOUs and linked nodes
+  queryIOU {
+    id
+    currency {
+      name
+      isoCode
+    }
+    borrower {
+      cordaNodeName
+    }
+    lender {
+      cordaNodeName
+    }
+  }
+
+  # Query member and related nodes
+    queryMember {
+      cordaNodeName
+      lended {
+        value
+        currency {
+          isoCode
+        }
+      }
+      borrowed {
+        value
+        currency {
+          isoCode
+        }
+      }
+    }
+}

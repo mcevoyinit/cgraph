@@ -1,0 +1,30 @@
+mutation {
+    addCurrency(input: [
+        {
+            id: "alpha"
+            name: "Pound Sterling"
+            isoCode: "GBP"
+        },
+        {
+            id: "beta"
+            name: "US Dollars"
+            isoCode: "USD"
+        },
+        {
+            id: "charlie"
+            name: "Euro"
+            isoCode: "EUR"
+        },
+        {
+            id: "delta"
+            name: "Singpore Dollar"
+            isoCode: "SGP"
+        }
+    ]) {
+        currency {
+            id
+            name
+            isoCode
+        }
+    }
+}
