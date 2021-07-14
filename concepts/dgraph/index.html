@@ -11,14 +11,14 @@
       
       
       
-        <link rel="canonical" href="https://cgraph.io/concepts/graphdb/">
+        <link rel="canonical" href="https://cgraph.io/concepts/dgraph/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.6">
     
     
       
-        <title>GraphDB - CGraph</title>
+        <title>DGraph - CGraph</title>
       
     
     
@@ -66,6 +66,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#graph-native" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -92,7 +97,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              GraphDB
+              DGraph
             
           </span>
         </div>
@@ -211,6 +216,21 @@
 
   
   
+  
+    <li class="md-nav__item">
+      <a href="../../why/" class="md-nav__link">
+        The Why
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
     
   
   
@@ -218,14 +238,14 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
       
-      <label class="md-nav__link" for="__nav_2">
+      <label class="md-nav__link" for="__nav_3">
         Concepts
         <span class="md-nav__icon md-icon"></span>
       </label>
       <nav class="md-nav" aria-label="Concepts" data-md-level="1">
-        <label class="md-nav__title" for="__nav_2">
+        <label class="md-nav__title" for="__nav_3">
           <span class="md-nav__icon md-icon"></span>
           Concepts
         </label>
@@ -246,18 +266,6 @@
             
   
   
-  
-    <li class="md-nav__item">
-      <a href="../graphql/" class="md-nav__link">
-        GraphQL
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
     
   
   
@@ -267,10 +275,62 @@
       
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          DGraph
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
-        GraphDB
+        DGraph
       </a>
       
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#graph-native" class="md-nav__link">
+    Graph Native
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../domain-data/" class="md-nav__link">
+        Domain Data
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../productivity/" class="md-nav__link">
+        Productivity
+      </a>
     </li>
   
 
@@ -292,14 +352,14 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
       
-      <label class="md-nav__link" for="__nav_3">
+      <label class="md-nav__link" for="__nav_4">
         Solution
         <span class="md-nav__icon md-icon"></span>
       </label>
       <nav class="md-nav" aria-label="Solution" data-md-level="1">
-        <label class="md-nav__title" for="__nav_3">
+        <label class="md-nav__title" for="__nav_4">
           <span class="md-nav__icon md-icon"></span>
           Solution
         </label>
@@ -313,30 +373,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_1" type="checkbox" id="__nav_3_1" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_1" type="checkbox" id="__nav_4_1" >
       
-      <label class="md-nav__link" for="__nav_3_1">
+      <label class="md-nav__link" for="__nav_4_1">
         CorDapp
         <span class="md-nav__icon md-icon"></span>
       </label>
       <nav class="md-nav" aria-label="CorDapp" data-md-level="2">
-        <label class="md-nav__title" for="__nav_3_1">
+        <label class="md-nav__title" for="__nav_4_1">
           <span class="md-nav__icon md-icon"></span>
           CorDapp
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../cordapp/modules/" class="md-nav__link">
-        Modules
-      </a>
-    </li>
-  
-
           
             
   
@@ -450,19 +498,73 @@
               </div>
             
             
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#graph-native" class="md-nav__link">
+    Graph Native
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
           
           <div class="md-content" data-md-component="content">
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/mcevoyinit/cgraph/edit/master/docs/concepts/graphdb.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/mcevoyinit/cgraph/edit/master/docs/concepts/dgraph.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
                 
-                  <h1>GraphDB</h1>
+                  <h1>DGraph</h1>
                 
-                
+                <p>DGraph is the graph technology that interests me the most. </p>
+<p>Although the CGraph Library will be architected in future to support many graph databases, 
+I chose DGraph as a first case study run. 
+DGraph is my personal favourite graph database. 
+The main reasons for the decision will become clear:</p>
+<p>DGraph - “Distributed Graph Database” is a GraphQL native distributed graph database that is written from the disk to the top-level query interface by DGraph labs in California.</p>
+<blockquote>
+<blockquote>
+<p>DGraph is a curve jumper. It does distributed transactions, low-latency arbitrary depth joins, traversals, provides synchronous replication and horizontal scalability — with a simple GraphQL-like API -  <a href="https://www.dgraph.io">DGraph Labs</a></p>
+</blockquote>
+</blockquote>
+<h3 id="graph-native">Graph Native<a class="headerlink" href="#graph-native" title="Permanent link">&para;</a></h3>
+<p>DGraph is unique in that it has a GraphQL server natively embedded in it, alongside its graph DB / KV store. This is interesting because:</p>
+<p>Typically the GraphQL server lives separately from the underlying datastore, as illustrated below. 
+Having an all-in-one service greatly speeds up development effort, lowers maintenance cost, and solution complexity, which is the primary reason DGraph is CGraphs first integration.</p>
+<p><img alt="alt text" height="500px" src="../../resources/images/GQLNative.png" width="500px" /></p>
+<p>Furthermore, this removes the need for writing and maintaining a GraphQL server, resolvers, and middlewares. 
+Maintaining a separate graph server and database processes is heavy-duty!</p>
+<p>Another example of this pairing is:</p>
+<ul>
+<li>Lacinia - GraphQL server written in Clojure by Walmart Labs Lacinia - GraphQL for Clojure</li>
+<li>Crux - Bitemporal Graph DB written in Clojure. Crux  </li>
+</ul>
+<p>Pairings like the above will considered in future version. They may be better suited to larger Corda deployments.
+The creators of Crux have written a Crux-Corda Connector CorDapp juxt/crux-corda  </p>
                 
               
               
@@ -481,7 +583,7 @@
   
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
-        <a href="../graphql/" class="md-footer__link md-footer__link--prev" rel="prev">
+        <a href="../graph/" class="md-footer__link md-footer__link--prev" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -490,19 +592,19 @@
               <span class="md-footer__direction">
                 Previous
               </span>
-              GraphQL
+              The Graph
             </div>
           </div>
         </a>
       
       
-        <a href="../../cordapp/modules/" class="md-footer__link md-footer__link--next" rel="next">
+        <a href="../domain-data/" class="md-footer__link md-footer__link--next" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Modules
+              Domain Data
             </div>
           </div>
           <div class="md-footer__button md-icon">

@@ -217,18 +217,33 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../why/" class="md-nav__link">
+        The Why
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
     
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
       
-      <label class="md-nav__link" for="__nav_2">
+      <label class="md-nav__link" for="__nav_3">
         Concepts
         <span class="md-nav__icon md-icon"></span>
       </label>
       <nav class="md-nav" aria-label="Concepts" data-md-level="1">
-        <label class="md-nav__title" for="__nav_2">
+        <label class="md-nav__title" for="__nav_3">
           <span class="md-nav__icon md-icon"></span>
           Concepts
         </label>
@@ -251,8 +266,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../concepts/graphql/" class="md-nav__link">
-        GraphQL
+      <a href="../concepts/dgraph/" class="md-nav__link">
+        DGraph
       </a>
     </li>
   
@@ -263,8 +278,20 @@
   
   
     <li class="md-nav__item">
-      <a href="../concepts/graphdb/" class="md-nav__link">
-        GraphDB
+      <a href="../concepts/domain-data/" class="md-nav__link">
+        Domain Data
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/productivity/" class="md-nav__link">
+        Productivity
       </a>
     </li>
   
@@ -287,14 +314,14 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
       
-      <label class="md-nav__link" for="__nav_3">
+      <label class="md-nav__link" for="__nav_4">
         Solution
         <span class="md-nav__icon md-icon"></span>
       </label>
       <nav class="md-nav" aria-label="Solution" data-md-level="1">
-        <label class="md-nav__title" for="__nav_3">
+        <label class="md-nav__title" for="__nav_4">
           <span class="md-nav__icon md-icon"></span>
           Solution
         </label>
@@ -308,30 +335,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_1" type="checkbox" id="__nav_3_1" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_1" type="checkbox" id="__nav_4_1" >
       
-      <label class="md-nav__link" for="__nav_3_1">
+      <label class="md-nav__link" for="__nav_4_1">
         CorDapp
         <span class="md-nav__icon md-icon"></span>
       </label>
       <nav class="md-nav" aria-label="CorDapp" data-md-level="2">
-        <label class="md-nav__title" for="__nav_3_1">
+        <label class="md-nav__title" for="__nav_4_1">
           <span class="md-nav__icon md-icon"></span>
           CorDapp
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../cordapp/modules/" class="md-nav__link">
-        Modules
-      </a>
-    </li>
-  
-
           
             
   
@@ -566,21 +581,22 @@
                 <h2 id="set-up-your-graph">Set up your graph<a class="headerlink" href="#set-up-your-graph" title="Permanent link">&para;</a></h2>
 <p>You need to specify the GraphQL server that CGraph will connect to. 
 I chose DGraph as a first integration since the GraphQL server and KV store are in one process. However any GraphQL server should work. 
-You can set up DGraph locally or remote, for each node.</p>
+For each node you can either set up DGraph locally or remote.</p>
 <h3 id="remote">Remote<a class="headerlink" href="#remote" title="Permanent link">&para;</a></h3>
-<p>DGraph has a free, one click deployable, instance that's super easy to get set-up <code>https://cloud.dgraph.io/</code>. I use two premium instances for the demo and test. I'll add a version that works with a single instance for development convenience in future.</p>
+<p>DGraph has a free, one click deployable, instance that's super easy to get set-up over at <a href="https://cloud.dgraph.io">DGraph Cloud</a>. I use two premium (lender, borrower) instances for the demo and test. 
+I'll add a version that works with a single instance for developer convenience in the future.</p>
 <h3 id="locally">Locally<a class="headerlink" href="#locally" title="Permanent link">&para;</a></h3>
-<p><code>Golang binaries</code> set up golang and fetch them at https://dgraph.io/downloads</p>
+<p><code>Golang</code> set up golang and fetch binaries at <a href="https://dgraph.io/downloads">DGraph Downloads</a></p>
 <p><code>$GOPATH/bin/dgraph zero
-$GOPATH/bin/dgraph alpha --port_offset 1
+$GOPATH/bin/dgraph alpha --port_offset 1 
 <div class="highlight"><pre><span></span><code>#### Docker
 
 ```docker run --rm -it -p &quot;8080:8080&quot; -p &quot;9080:9080&quot; -p &quot;8000:8000&quot; -v ~/dgraph:/dgraph &quot;dgraph/standalone:v21.03.0&quot;```
 
 
 Edit the URL and Auth Token in `deployCGraph` gradle task in root `build.gradle`
-You can also edit the testing config in `CGraphIOUDriverTesting` to run the sample driverdsl test.
-This is the URL Corda will write to and, the URL the client will read from. 
+You can also edit the testing config in `CGraphIOUDriverTesting` to run the sample DriverDSL test.
+This is the URL Corda will write to and, the URL clients will read from. 
 
 ### Running CGraph
 Hit a terminal in the project root directory:
@@ -595,11 +611,10 @@ cd cgraph/cgraph-js/
 node.js iou-client.js 3000 8080
 // new terminal tab
 node.js iou-client.js 3001 8081</code></p>
-<p>fjsdfkj  adfsadf</p>
 <ul>
-<li>You can interact with this HTTP API by using the Insomnia HTTP client json script <code>CGraphInsomnia.json</code> in the <code>resources/scripts</code> folder.</li>
-<li>The order in which you seed the data should go like this:<ul>
-<li><code>Member</code> goes directly into each nodes graph, not the ledger</li>
+<li>You can interact with this HTTP API by using the Insomnia HTTP client json script <code>CGraphInsomnia.json</code> in the <code>resources/scripts</code> folder. </li>
+<li>The order in which you seed the data should go like this: Will provide mutations.<ul>
+<li><code>Member</code> both goes directly into their own and each other's graph.</li>
 <li><code>Currency</code> written to ledger and then graph via lib. Hit node.js server over http.</li>
 <li><code>Balance</code> written to ledger. References currency and holder member, from above</li>
 <li><code>IOU</code> written to ledger. References all of above. IOU in both ledgers and graphs. </li>
