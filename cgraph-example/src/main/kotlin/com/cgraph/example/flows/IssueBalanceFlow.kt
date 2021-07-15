@@ -18,6 +18,7 @@ import java.util.*
 
 @InitiatingFlow
 @StartableByService
+@StartableByRPC
 class IssueBalanceFlow(val currencyIsoCode: String, val value: Int) : FlowLogic<SignedTransaction>() {
 
     companion object {
@@ -48,7 +49,6 @@ class IssueBalanceFlow(val currencyIsoCode: String, val value: Int) : FlowLogic<
 
         // Verify that the transaction is valid.
         txBuilder.verify(serviceHub)
-
         // Sign the transaction.
         val partSignedTx = serviceHub.signInitialTransaction(txBuilder)
         // Notarise and record the transaction in both parties' vaults.

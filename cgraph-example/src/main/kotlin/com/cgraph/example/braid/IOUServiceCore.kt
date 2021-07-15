@@ -2,8 +2,7 @@ package com.cgraph.example.braid
 
 import com.cgraph.core.flows.DropGraphDataFlow
 import com.cgraph.core.flows.PostGraphQLFlow
-import com.cgraph.core.services.CGraphService
-import com.cgraph.core.support.graphService
+import com.cgraph.core.services.GraphQLRequestType
 import com.cgraph.core.support.graphableString
 import com.cgraph.example.flows.IssueBalanceFlow
 import com.cgraph.example.flows.IssueCurrencyFlow
@@ -24,14 +23,13 @@ class IOUServiceCore(braidContext: BraidCordaContext) : IOUService {
     }
 
     private val serviceHub: AppServiceHub = braidContext.serviceHub
-    private val graphService: CGraphService = serviceHub.graphService()
 
     override fun echoFlow(text: String): String {
         return text
     }
 
-    override fun postGraphQLFlow(graphql: String): CordaFuture<UUID?> {
-        return serviceHub.startFlow(PostGraphQLFlow(graphql)).returnValue
+    override fun postGraphQLFlow(graphql: String, graphQLRequestType: String): CordaFuture<UUID?> {
+        return serviceHub.startFlow(PostGraphQLFlow(graphql, GraphQLRequestType.valueOf(graphQLRequestType))).returnValue
     }
 
     override fun dropDataFlow(): Boolean {

@@ -39,6 +39,7 @@ import java.util.*
  */
 @InitiatingFlow
 @StartableByService
+@StartableByRPC
 class IssueIOUFlow(val iouValue: Int,
                    val currencyName: String,
                    val borrower: Party
@@ -48,24 +49,7 @@ class IssueIOUFlow(val iouValue: Int,
      * checkpoint is reached in the code. See the 'progressTracker.currentStep' expressions within the call() function.
      */
     companion object {
-        object GENERATING_TRANSACTION : ProgressTracker.Step("Generating transaction based on new IOU.")
-        object VERIFYING_TRANSACTION : ProgressTracker.Step("Verifying contract constraints.")
-        object SIGNING_TRANSACTION : ProgressTracker.Step("Signing transaction with our private key.")
-        object GATHERING_SIGS : ProgressTracker.Step("Gathering the counterparty's signature.") {
-            override fun childProgressTracker() = CollectSignaturesFlow.tracker()
-        }
-
-        object FINALISING_TRANSACTION : ProgressTracker.Step("Obtaining notary signature and recording transaction.") {
-            override fun childProgressTracker() = FinalityFlow.tracker()
-        }
-
-        fun tracker() = ProgressTracker(
-            GENERATING_TRANSACTION,
-            VERIFYING_TRANSACTION,
-            SIGNING_TRANSACTION,
-            GATHERING_SIGS,
-            FINALISING_TRANSACTION
-        )
+        fun tracker() = ProgressTracker()
     }
 
     override val progressTracker = tracker()
@@ -83,8 +67,6 @@ class IssueIOUFlow(val iouValue: Int,
             ?.uuid() ?: throw IllegalStateException("No member found for borrower party")
         val currencyId = graphService.queryCurrencyIdByName(currencyName)?.uuid() ?: throw IllegalStateException("No currency found for party")
 
-        // Stage 1.
-        progressTracker.currentStep = GENERATING_TRANSACTION
         // Generate an unsigned transaction.
         val iouState = IOUState(
             linearId = UniqueIdentifier(id = UUID.randomUUID()),
@@ -106,55 +88,48 @@ class IssueIOUFlow(val iouValue: Int,
         val lenderBalanceValue = lenderInputBalanceState.state.data.value
         val lenderOutputBalanceState = lenderInputBalanceState.state.data.copy(value = (lenderBalanceValue - iouState.value))
 
-        val borrowerFlowSession = initiateFlow(borrower)
-         borrowerFlowSession.send(currencyId.toString())
+       // val borrowerFlowSession = initiateFlow(borrower)
+        // borrowerFlowSession.send(currencyId.toString())
+       // val borrowerInputBalanceState = subFlow(ReceiveStateAndRefFlow<BalanceState>(borrowerFlowSession)).first()
 
-        val borrowerInputBalanceState = subFlow(ReceiveStateAndRefFlow<BalanceState>(borrowerFlowSession)).first()
-
-        val borrowerBalanceValue = borrowerInputBalanceState.state.data.value
-        val borrowerOutputBalanceState = borrowerInputBalanceState.state.data.copy(value = borrowerBalanceValue + iouState.value)
+       // val borrowerBalanceValue = borrowerInputBalanceState.state.data.value
+       // val borrowerOutputBalanceState = borrowerInputBalanceState.state.data.copy(value = borrowerBalanceValue + iouState.value)
 
         val iouCommand = Command(IOUContract.Commands.Create(), iouState.participants.map { it.owningKey })
         val lenderBalanceCommand = Command(BalanceContract.Commands.Create(), lenderOutputBalanceState.participants.map { it.owningKey })
-        val borrowerBalanceCommand = Command(BalanceContract.Commands.Create(), borrowerOutputBalanceState.participants.map { it.owningKey })
+        //val borrowerBalanceCommand = Command(BalanceContract.Commands.Create(), borrowerOutputBalanceState.participants.map { it.owningKey })
 
         val txBuilder = TransactionBuilder(notary)
-            .addInputState(lenderInputBalanceState)
-            .addInputState(borrowerInputBalanceState)
-            .addOutputState(lenderOutputBalanceState, BalanceContract.ID)
-            .addOutputState(borrowerOutputBalanceState, BalanceContract.ID)
+        //    .addInputState(lenderInputBalanceState)
+        //    .addInputState(borrowerInputBalanceState)
+         //   .addOutputState(lenderOutputBalanceState, BalanceContract.ID)
+        //    .addOutputState(borrowerOutputBalanceState, BalanceContract.ID)
             .addOutputState(iouState, IOUContract.ID)
-            .addCommand(lenderBalanceCommand)
-            .addCommand(borrowerBalanceCommand)
+       //     .addCommand(BalanceContract.Commands.Create(), lenderOutputBalanceState.participants.map { it.owningKey })
+            //.addCommand(borrowerBalanceCommand)
             .addCommand(iouCommand)
 
-        // Stage 2.
-        progressTracker.currentStep = VERIFYING_TRANSACTION
         // Verify that the transaction is valid.
         txBuilder.verify(serviceHub)
 
-        // Stage 3.
-        progressTracker.currentStep = SIGNING_TRANSACTION
         // Sign the transaction.
         val partSignedTx = serviceHub.signInitialTransaction(txBuilder)
 
-        // Stage 4.
-        progressTracker.currentStep = GATHERING_SIGS
         // Send the state to the counterparty, and receive it back with their signature.
-        val fullySignedTx = subFlow(CollectSignaturesFlow(partSignedTx, setOf(borrowerFlowSession), GATHERING_SIGS.childProgressTracker()))
+        //
+        //val fullySignedTx = subFlow(CollectSignaturesFlow(partSignedTx, setOf(borrowerFlowSession)))
 
-        // Stage 5.
-        progressTracker.currentStep = FINALISING_TRANSACTION
         // Notarise and record the transaction in both parties' vaults.
-        return subFlow(FinalityFlow(fullySignedTx, setOf(borrowerFlowSession), FINALISING_TRANSACTION.childProgressTracker()))
+        return subFlow(FinalityFlow(partSignedTx, emptyList())) //setOf(borrowerFlowSession)))
     }
 }
 
 @InitiatedBy(IssueIOUFlow::class)
 class Acceptor(val borrowerSession: FlowSession) : FlowLogic<SignedTransaction>() {
+
         @Suspendable
         override fun call(): SignedTransaction {
-            val currencyId = borrowerSession.receive<String>()
+  /*          val currencyId = borrowerSession.receive<String>()
                 .unwrap {
                     it
                 }
@@ -171,11 +146,11 @@ class Acceptor(val borrowerSession: FlowSession) : FlowLogic<SignedTransaction>(
 
             val signTransactionFlow = object : SignTransactionFlow(borrowerSession) {
                 override fun checkTransaction(stx: SignedTransaction) = requireThat {
-                    "This must be an IOU transaction." using (true == true)
+                    "This must be an IOU transaction." using (true)
                 }
             }
-            val txId = subFlow(signTransactionFlow).id
+            val txId = subFlow(signTransactionFlow).id*/
 
-            return subFlow(ReceiveFinalityFlow(borrowerSession, expectedTxId = txId))
+            return subFlow(ReceiveFinalityFlow(borrowerSession))//, expectedTxId = txId))
         }
     }

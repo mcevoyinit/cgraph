@@ -1,5 +1,6 @@
 package com.cgraph.example.braid
 
+import com.cgraph.core.services.GraphQLRequestType
 import io.cordite.braid.core.annotation.BraidMethod
 import io.cordite.braid.core.annotation.BraidService
 import io.cordite.braid.core.constants.BraidConstants.BRAID_AUTHORIZATION_SCHEME_NAME
@@ -29,7 +30,8 @@ interface IOUService {
     @POST
     @Path("/post-gql-flow")
     @Operation(summary = "")
-    fun postGraphQLFlow(@QueryParam("graphql") graphql: String): CordaFuture<UUID?>
+    fun postGraphQLFlow(@QueryParam("graphql") graphql: String,
+                        @QueryParam("graphqlRequestType") graphQLRequestType: String): CordaFuture<UUID?>
 
     @POST
     @Path("/drop-data")

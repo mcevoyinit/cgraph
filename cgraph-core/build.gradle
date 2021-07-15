@@ -1,3 +1,11 @@
+plugins {
+    id "java-library"
+    id "maven-publish"
+}
+
+group 'com.cgraph.core'
+version '1.0-SNAPSHOT'
+
 repositories {
     maven {
         url 'https://repo1.maven.org/maven2'
@@ -14,6 +22,10 @@ repositories {
     maven { url "https://ci-artifactory.corda.r3cev.com/artifactory/corda-lib" }
     maven { url "https://ci-artifactory.corda.r3cev.com/artifactory/corda-lib-dev" }
     maven { url "https://jitpack.io" }
+}
+
+repositories {
+    mavenCentral()
 }
 
 apply plugin: 'kotlin'
@@ -127,4 +139,33 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
 task integrationTest(type: Test, dependsOn: []) {
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
+}
+
+// Configures the publishing
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/mcevoyinit/cgraph")
+            credentials {
+                username = "mcevoyinit"//System.getenv("GITHUB_USERNAME")
+                password = "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"//System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
+            // Behebt den Fehler mit den dynamischen Versionen von Spring Boot
+            // Fixes the error with dynamic versions when using Spring Boot
+            /*versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }*/
+        }
+    }
 }

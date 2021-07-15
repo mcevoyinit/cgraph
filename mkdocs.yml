@@ -4,7 +4,7 @@ site_url: https://cgraph.io
 dev_addr: 0.0.0.0:8000
 
 repo_name: 'GitHub'
-repo_url: 'https://github.com/ericmcevoyr3/cgraph'
+repo_url: 'https://github.com/mcevoyinit/cgraph'
 
 # https://squidfunk.github.io/mkdocs-material/
 theme:
@@ -48,4 +48,20 @@ extra:
       link: https://kotlinlang.slack.com/messages/kgraphql
 
 nav:
-  - 'Overview': 'index.md'
+  - 'Overview': index.md
+  - 'The Why': why.md
+  - 'Concepts' :
+      - 'The Graph' : concepts/graph.md
+      - 'DGraph' : concepts/dgraph.md
+      - 'Domain Data' : concepts/domain-data.md
+      - 'Productivity' : concepts/productivity.md
+  - 'Solution':
+      - 'CorDapp':
+         - 'The Core' : cordapp/core.md
+         - 'CGraph JS' : cordapp/js.md
+         - 'IOU Example': cordapp/example.md
+      - 'Architecture': architecture/solution.md
+  - 'Installation' : installation.md
+  - 'Future': future.md
+  - 'FAQ': faq.md
+

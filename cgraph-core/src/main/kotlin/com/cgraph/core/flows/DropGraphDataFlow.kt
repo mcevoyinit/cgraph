@@ -4,6 +4,7 @@ import co.paralleluniverse.fibers.Suspendable
 import com.cgraph.core.support.graphService
 import net.corda.core.flows.FlowLogic
 import net.corda.core.flows.InitiatingFlow
+import net.corda.core.flows.StartableByRPC
 import net.corda.core.flows.StartableByService
 import net.corda.core.utilities.ProgressTracker
 
@@ -12,6 +13,7 @@ import net.corda.core.utilities.ProgressTracker
  */
 @InitiatingFlow
 @StartableByService
+@StartableByRPC
 class DropGraphDataFlow : FlowLogic<Boolean>() {
     override val progressTracker = ProgressTracker()
 

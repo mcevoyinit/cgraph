@@ -3,11 +3,13 @@ package com.cgraph.core.services
 import com.cgraph.core.client.GQLClient
 import com.cgraph.core.client.GraphQLResponse
 import com.cgraph.core.mutations.GraphQLMutationGenerator
+import com.cgraph.core.mutations.TransactionType
 import com.cgraph.core.states.GraphableState
 import com.cgraph.core.support.MapOfMaps
 import net.corda.core.node.AppServiceHub
 import net.corda.core.node.ServiceHub
 import net.corda.core.node.services.CordaService
+import net.corda.core.serialization.CordaSerializable
 import net.corda.core.serialization.SingletonSerializeAsToken
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -29,7 +31,7 @@ import rx.Subscription
 class CGraphService(serviceHub: AppServiceHub) : SingletonSerializeAsToken() {
 
     private val nodeOrganisation = serviceHub.myInfo.legalIdentities.first().name.organisation
-    private val vaultUpdateSubscription: Subscription by lazy { registerRawUpdatesSubscription(serviceHub) }
+    private val vaultUpdateSubscription: Subscription by lazy { registerGraphableUpdatesSubscription(serviceHub) }
     private val graphQLMutationGenerator: GraphQLMutationGenerator = GraphQLMutationGenerator()
     private val graphQLUrl: String by lazy { getGraphQLURL(serviceHub) }
     private val graphQLToken: String by lazy { getGraphQLToken(serviceHub)}
@@ -54,24 +56,40 @@ class CGraphService(serviceHub: AppServiceHub) : SingletonSerializeAsToken() {
         }
     }
 
-    private fun registerRawUpdatesSubscription(serviceHub: ServiceHub): Subscription  {
+    private fun registerGraphableUpdatesSubscription(serviceHub: ServiceHub): Subscription  {
         logger.debug("Registering CGraph Service ($nodeOrganisation) for Vault Raw Updates.")
         return serviceHub.vaultService.rawUpdates.subscribe { vaultUpdate ->
             val graphables = vaultUpdate.produced
-                .filter { (it.state.data is GraphableState)}
+                .filter {
+                    (it.state.data is GraphableState)
+                }
                 .map { state ->
                     val toGraph = (state.state.data as GraphableState)
-                    graphQLMutationGenerator.processStates(toGraph.buildEntityMap())
+                    
+                    if(vaultUpdate.consumed
+                            .filter {
+                                it.state.data is GraphableState
+                             }
+                            .any { graphableInputs ->
+                                toGraph.linearId.id == (graphableInputs.state.data as GraphableState).linearId.id
+                            }
+                    ) {
+                        graphQLMutationGenerator.processStates(toGraph.buildEntityMap(), TransactionType.GENERAL)
+                    }
+                    else {
+                        graphQLMutationGenerator.processStates(toGraph.buildEntityMap(), TransactionType.ISSUANCE)
+                    }
                 }
             if (graphables.isNotEmpty()) {
                 graphables.forEach { mutation ->
-                    var request: GraphQLResponse? = null
+                    var request: MapOfMaps? = null
                     try {
-                        request = graphQlClient.request(graphQLToken, mutation)
+
+                        request = performGraphQLRequest(mutation, GraphQLRequestType.MUTATION)
                     } catch (ex: Exception) {
                         logger.info("GraphQL request failed: $ex")
                     } finally {
-                        logger.info("GraphQL request success for $request")
+                        logger.info("GraphQL request success for ${request}")
                     }
                 }
             }
@@ -90,14 +108,33 @@ class CGraphService(serviceHub: AppServiceHub) : SingletonSerializeAsToken() {
         return token
     }
 
-    fun performGraphQLRequest(graphQlSelection: String): MapOfMaps? {
+    fun performGraphQLRequest(graphQlSelection: String, graphQLRequestType: GraphQLRequestType): MapOfMaps? {
         return graphQlClient.request(graphQLToken, graphQlSelection).let {
             it.errors?.let { errors ->
                 error("Errors occurred when querying the graph $errors")
             }
             it.data?.let { data ->
-                // TODO handle values empty case
-                return data.values.first().toTypedArray().first()
+                // TODO enhance this and handle values empty case
+                return when (graphQLRequestType) {
+                    GraphQLRequestType.QUERY -> {
+                        // query response structure
+                        (data.values.first() as List<MapOfMaps>).first()
+                    }
+                    GraphQLRequestType.MUTATION -> {
+                        // Mutation response structure
+                        val res = data
+                            .values
+                            .first()
+                            .toTypedArray()
+                            .first()
+                            .values
+                            .first() as List<MapOfMaps>
+                        res.first()
+                    }
+                    else -> {
+                        emptyMap()
+                    }
+                }
             }
         }
     }
@@ -111,3 +148,6 @@ class CGraphService(serviceHub: AppServiceHub) : SingletonSerializeAsToken() {
         //val DGRAPH_SCHEMA = getResourceAsText("schema.graphql")
     }
 }
+
+@CordaSerializable
+enum class GraphQLRequestType { QUERY, MUTATION, SUBSCRIPTION}

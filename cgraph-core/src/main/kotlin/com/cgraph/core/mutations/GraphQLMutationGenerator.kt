@@ -3,36 +3,120 @@ package com.cgraph.core.mutations
 import com.cgraph.core.states.GraphableState
 import com.cgraph.core.support.MapOfMaps
 import com.cgraph.core.support.property
+import com.cgraph.core.support.remove
 import net.corda.core.contracts.ContractState
 import net.corda.core.contracts.StateAndRef
-import java.util.*
+import java.util.UUID
 
 /**
- * generates a mutation based on the shape of the provided [GraphableState] entity property map.
+ * Generates a mutation based on the shape of the provided [GraphableState] entity property map.
  * Enhancement is required but it can detect, based on the presence of UUID type,
  * if a nested mutation is needed, in order to write a separate entity.
+ *
+ * Also supports update mutations.
+ * [CGraphService] will detect if an update is needed based on if the input state matches to an output state
  */
 class GraphQLMutationGenerator {
 
-    fun processStates(entity: MapOfMaps) : String {
+    fun processStates(entity: MapOfMaps, txnType: TransactionType) : String {
+        return when(txnType) {
+            TransactionType.GENERAL -> generateUpsertMutation(entity)
+            TransactionType.ISSUANCE -> generateInsertMutation(entity)
+        }
+    }
+
+    private fun generateUpsertMutation(entity: MapOfMaps) : String {
         val type = entity.property("entityType") as String
-        val keys = entity.keys
-        val values = entity.values
-        val mutationEntries = generateMutationsEntries(keys, values)
+        var mapForMutation = entity.remove("entityType").toMutableMap()
+        val filter = """
+            id : { 
+                eq : "${mapForMutation["id"]}" 
+            }
+            """.trimIndent()
+        //mapForMutation = 0
+        mapForMutation.remove("id") //as MutableMap<String, Any>
+        var set = ""
+        mapForMutation.forEach {
+            set+= "${it.key} : \"${it.value}\" \n"
+        }
+        // Core mutation kv mappings
+        var mutationEntries = ""
+        (mapForMutation.keys).zip(mapForMutation.values).forEach { pair ->
+            if(pair.first == "entityType") {
+                mutationEntries += ""
+            } else {
+                mapForMutation[pair.first] = pair.second
+                mutationEntries += when (pair.second) {
+                    is UUID -> {
+                        "${(pair.first)} : { id: \"${pair.second}\" }"
+                    }
+                    null -> {
+                        "${(pair.first)}: [] \n"
+                    }
+                    else -> {
+                        "${(pair.first)}: \"${pair.second}\" \n"
+                    }
+                }
+            }
+        }
 
         return """
-            mutation {
-              add$type(input: [
-                {
-                    ${mutationEntries}
+                mutation {
+                  update$type(input: 
+                    {
+                        filter : {
+                            $filter
+                        },
+                        set : {
+                            $mutationEntries
+                          }
+                        }
+                       )
+                    } {
+                    ${type.decapitalize()} {
+                        id
+                    }
                 }
-              ]) {
-                ${type.decapitalize()} {
-                     id
-                   }
-                }
-              }
         """.trimIndent()
+    }
+
+    private fun generateInsertMutation(entity: MapOfMaps) : String {
+        val type = entity.property("entityType") as String
+        val mapForMutation = entity.remove("entityType").toMutableMap()
+
+        // Core mutation kv mappings
+        var mutationEntries = ""
+        (mapForMutation.keys).zip(mapForMutation.values).forEach { pair ->
+            if(pair.first == "entityType") {
+                mutationEntries += ""
+            } else {
+                mapForMutation[pair.first] = pair.second
+                mutationEntries += when (pair.second) {
+                    is UUID -> {
+                        "${(pair.first)} : { id: \"${pair.second}\" }"
+                    }
+                    null -> {
+                        "${(pair.first)}: [] \n"
+                    }
+                    else -> {
+                        "${(pair.first)}: \"${pair.second}\" \n"
+                    }
+                }
+            }
+        }
+        return """
+                mutation {
+                  add$type(input: [
+                    {
+                        $mutationEntries
+                    }
+                  ]) {
+                    ${type.decapitalize()} {
+                         id
+                       }
+                    }
+                  }
+            """.trimIndent()
     }
 
     private fun generateMutationsEntries(keys: Set<String>, values: Collection<Any>): String {
@@ -73,3 +157,6 @@ class GraphQLMutationGenerator {
         }
     }
 }
+
+enum class TransactionType { ISSUANCE, GENERAL }
+

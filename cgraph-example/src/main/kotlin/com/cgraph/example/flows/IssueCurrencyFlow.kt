@@ -15,6 +15,7 @@ import java.util.*
 
 @InitiatingFlow
 @StartableByService
+@StartableByRPC
 class IssueCurrencyFlow(val name: String,
                         val isoCode: String,
                         val observers: List<Party>

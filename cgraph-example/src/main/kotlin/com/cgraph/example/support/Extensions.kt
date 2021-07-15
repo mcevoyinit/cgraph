@@ -1,9 +1,11 @@
 package com.cgraph.example.sample
 
 import com.cgraph.core.services.CGraphService
+import com.cgraph.core.services.GraphQLRequestType
 
 fun CGraphService.queryCurrencyIdByIsoCode(isoCode: String) =
-    performGraphQLRequest("""
+    performGraphQLRequest(
+        graphQlSelection = """
          query {
             queryCurrency(filter: {
               isoCode: { eq: "$isoCode" }
@@ -11,21 +13,25 @@ fun CGraphService.queryCurrencyIdByIsoCode(isoCode: String) =
               id
             }
         }
-    """.trimIndent()
+    """.trimIndent(),
+        graphQLRequestType = GraphQLRequestType.QUERY
 )
 
 fun CGraphService.queryCurrencyIdByName(name: String) =
-    performGraphQLRequest("""
+    performGraphQLRequest(
+        graphQlSelection = """
         query {
            queryCurrency(filter : { name: { eq: "$name" } }) {
               id
             }
         }
-    """.trimIndent()
+    """.trimIndent(),
+        graphQLRequestType = GraphQLRequestType.QUERY
     )
 
 fun CGraphService.queryBalanceIdForCurrencyId(currencyId: String) =
-    performGraphQLRequest("""
+    performGraphQLRequest(
+        graphQlSelection = """
         query {
           queryBalance {
             currency(filter: { id: { eq: "$currencyId" } }) {
@@ -34,26 +40,31 @@ fun CGraphService.queryBalanceIdForCurrencyId(currencyId: String) =
             id
           }
         }
-    """.trimIndent()
+    """.trimIndent(),
+        graphQLRequestType = GraphQLRequestType.QUERY
     )
 
 fun CGraphService.memberIdForX500Name(nodeName: String) =
-    performGraphQLRequest("""
+    performGraphQLRequest(
+        graphQlSelection = """
         query {
            queryMember(filter: { cordaNodeName: { eq: "$nodeName" } }) {
               id
             }   
         }
-    """.trimIndent()
+    """.trimIndent(),
+        graphQLRequestType = GraphQLRequestType.QUERY
     )
 
 fun CGraphService.findPartyForMemberCordaNodeName(nodeName: String) {
-    val cordaX500Name = performGraphQLRequest("""
+    val cordaX500Name = performGraphQLRequest(
+        graphQlSelection = """
         query {
            queryMember(filter: { cordaNodeName: { eq: "$nodeName" } }) {
               id
             }   
         }
-    """.trimIndent()
+    """.trimIndent(),
+        graphQLRequestType = GraphQLRequestType.QUERY
     )
 }
