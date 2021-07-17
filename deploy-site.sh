@@ -22,10 +22,6 @@ cd $DIR
 
 # Add readme as index
 cat README.md > docs/index.md
-# Remove redundant link
-sed -i '/Checkout the documentation at/d' docs/index.md
-sed -i 's~](docs/~](~g' docs/index.md
-sed -i 's~.md)~)~g' docs/index.md
 
 # Build the site and push the new files up to GitHub
 mkdocs gh-deploy
