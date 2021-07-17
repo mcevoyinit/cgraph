@@ -303,6 +303,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#grand-development-stack" class="md-nav__link">
+    GRAND development stack
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -470,7 +477,7 @@
   
     <li class="md-nav__item">
       <a href="../../future/" class="md-nav__link">
-        Future work
+        Future
       </a>
     </li>
   
@@ -521,6 +528,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#grand-development-stack" class="md-nav__link">
+    GRAND development stack
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -552,16 +566,32 @@ The main reasons for the decision will become clear:</p>
 </blockquote>
 </blockquote>
 <h3 id="graph-native">Graph Native<a class="headerlink" href="#graph-native" title="Permanent link">&para;</a></h3>
-<p>DGraph is unique in that it has a GraphQL server natively embedded in it, alongside its graph DB / KV store. This is interesting because:</p>
+<p>DGraph is unique in that it has a GraphQL server natively embedded in the database process, alongside its graph DB / KV store. This is interesting because:</p>
 <p>Typically the GraphQL server lives separately from the underlying datastore, as illustrated below. 
 Having an all-in-one service greatly speeds up development effort, lowers maintenance cost, and solution complexity, which is the primary reason DGraph is CGraphs first integration.</p>
 <p><img alt="alt text" height="500px" src="../../resources/images/GQLNative.png" width="500px" /></p>
 <p>Furthermore, this removes the need for writing and maintaining a GraphQL server, resolvers, and middlewares. 
 Maintaining a separate graph server and database processes is heavy-duty!</p>
-<p>Another example of this pairing is:</p>
+<h2 id="grand-development-stack">GRAND development stack<a class="headerlink" href="#grand-development-stack" title="Permanent link">&para;</a></h2>
+<p>There are various layouts which are typically referred to as the GRAND development stack. 
+GRAND stack is a full-stack development integration for building graph-based applications. 
+GRAND stands for the following technologies:</p>
 <ul>
-<li>Lacinia - GraphQL server written in Clojure by Walmart Labs Lacinia - GraphQL for Clojure</li>
-<li>Crux - Bitemporal Graph DB written in Clojure. Crux  </li>
+<li><strong>GraphQL</strong> - a query language for APIs and a runtime for fulfilling those queries with your existing data. Relay is a popular example.</li>
+<li><strong>React</strong> - a JavaScript library for building user interfaces</li>
+<li><strong>Apollo Client</strong> - a fully-featured, production-ready caching GraphQL client for every server or UI framewor</li>
+<li><strong>Neo4j Database</strong> - a graph database that is ACID-compliant and built to store and retrieve connected data</li>
+</ul>
+<p>DGraph allows a leaner version of the GRAND stack since the database layer and the GraphQL server layer come bundled in one product. Full-stack development on DGraph requires fewer technologies</p>
+<ul>
+<li><strong>DGraph</strong> - ACID-compliant native GraphQL database with graph backend</li>
+<li><strong>React</strong>  - build user interfaces and reusable components as normal</li>
+<li><strong>Apollo Client</strong> - - GraphQL client can speak directly to your DGraph instance.</li>
+</ul>
+<p>Another example of the GQL server and db pairing is:</p>
+<ul>
+<li><strong>Lacinia</strong> - GraphQL server written in Clojure by Walmart Labs Lacinia - GraphQL for Clojure</li>
+<li><strong>Crux</strong> - Bitemporal Graph DB written in Clojure. Crux  </li>
 </ul>
 <p>Pairings like the above will considered in future version. They may be better suited to larger Corda deployments.
 The creators of Crux have written a Crux-Corda Connector CorDapp juxt/crux-corda  </p>

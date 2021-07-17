@@ -67,7 +67,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#set-up-your-graph" class="md-skip">
+        <a href="#cordapp" class="md-skip">
           Skip to content
         </a>
       
@@ -445,6 +445,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#cordapp" class="md-nav__link">
+    CorDapp
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#set-up-your-graph" class="md-nav__link">
     Set up your graph
   </a>
@@ -462,6 +469,20 @@
           <li class="md-nav__item">
   <a href="#locally" class="md-nav__link">
     Locally
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker" class="md-nav__link">
+    Docker
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-cgraph" class="md-nav__link">
+    Running CGraph
   </a>
   
 </li>
@@ -488,7 +509,7 @@
   
     <li class="md-nav__item">
       <a href="../future/" class="md-nav__link">
-        Future work
+        Future
       </a>
     </li>
   
@@ -533,6 +554,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#cordapp" class="md-nav__link">
+    CorDapp
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#set-up-your-graph" class="md-nav__link">
     Set up your graph
   </a>
@@ -550,6 +578,20 @@
           <li class="md-nav__item">
   <a href="#locally" class="md-nav__link">
     Locally
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker" class="md-nav__link">
+    Docker
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-cgraph" class="md-nav__link">
+    Running CGraph
   </a>
   
 </li>
@@ -578,7 +620,18 @@
                 
                   <h1>Installation</h1>
                 
-                <h2 id="set-up-your-graph">Set up your graph<a class="headerlink" href="#set-up-your-graph" title="Permanent link">&para;</a></h2>
+                <h2 id="cordapp">CorDapp<a class="headerlink" href="#cordapp" title="Permanent link">&para;</a></h2>
+<p>Add to your Cordapp’s Gradle dependencies:
+<div class="highlight"><pre><span></span><code><span class="n">dependencies</span><span class="o">{</span>
+    <span class="c1">// Corda dependency</span>
+    <span class="n">cordaCompile</span> <span class="s2">&quot;com.github.mcevoyinit.cgraph:cgraph-core:1.0-SNAPSHOT&quot;</span> 
+<span class="o">}</span> 
+</code></pre></div>
+Alternatively, you might want to fetch CGraph as a Cordapp fat JAR, in which case use compile instead of <code>cordaCompile</code> and skip the step below.</p>
+<p>Add CGraph as Cordapps to your deployNodes task:</p>
+<div class="highlight"><pre><span></span><code><span class="n">cordapp</span><span class="o">(</span><span class="s2">&quot;com.github.mcevoyinit.cgraph:cgraph-core:1.0-SNAPSHOT&quot;</span><span class="o">)</span>
+</code></pre></div>
+<h2 id="set-up-your-graph">Set up your graph<a class="headerlink" href="#set-up-your-graph" title="Permanent link">&para;</a></h2>
 <p>You need to specify the GraphQL server that CGraph will connect to. 
 I chose DGraph as a first integration since the GraphQL server and KV store are in one process. However any GraphQL server should work. 
 For each node you can either set up DGraph locally or remote.</p>
@@ -587,30 +640,27 @@ For each node you can either set up DGraph locally or remote.</p>
 I'll add a version that works with a single instance for developer convenience in the future.</p>
 <h3 id="locally">Locally<a class="headerlink" href="#locally" title="Permanent link">&para;</a></h3>
 <p><code>Golang</code> set up golang and fetch binaries at <a href="https://dgraph.io/downloads">DGraph Downloads</a></p>
-<p><code>$GOPATH/bin/dgraph zero
-$GOPATH/bin/dgraph alpha --port_offset 1 
-<div class="highlight"><pre><span></span><code>#### Docker
-
-```docker run --rm -it -p &quot;8080:8080&quot; -p &quot;9080:9080&quot; -p &quot;8000:8000&quot; -v ~/dgraph:/dgraph &quot;dgraph/standalone:v21.03.0&quot;```
-
-
-Edit the URL and Auth Token in `deployCGraph` gradle task in root `build.gradle`
-You can also edit the testing config in `CGraphIOUDriverTesting` to run the sample DriverDSL test.
-This is the URL Corda will write to and, the URL clients will read from. 
-
-### Running CGraph
-Hit a terminal in the project root directory:
+<div class="highlight"><pre><span></span><code><span class="nv">$GOPATH</span>/bin/dgraph zero
+<span class="nv">$GOPATH</span>/bin/dgraph alpha --port_offset <span class="m">1</span> 
 </code></pre></div>
-./gradlew clean deployCGraph
+<h3 id="docker">Docker<a class="headerlink" href="#docker" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>docker run --rm -it -p <span class="s2">&quot;8080:8080&quot;</span> -p <span class="s2">&quot;9080:9080&quot;</span> -p <span class="s2">&quot;8000:8000&quot;</span> -v ~/dgraph:/dgraph <span class="s2">&quot;dgraph/standalone:v21.03.0&quot;</span>
+</code></pre></div>
+<p>Edit the URL and Auth Token in <code>deployCGraph</code> gradle task in root <code>build.gradle</code>
+You can also edit the testing config in <code>CGraphIOUDriverTesting</code> to run the sample DriverDSL test.
+This is the URL Corda will write to and, the URL clients will read from. </p>
+<h3 id="running-cgraph">Running CGraph<a class="headerlink" href="#running-cgraph" title="Permanent link">&para;</a></h3>
+<p>Hit a terminal in the project root directory:</p>
+<p><div class="highlight"><pre><span></span><code>./gradlew clean deployCGraph
 ./build/nodes/runnodes
-<div class="highlight"><pre><span></span><code>This brings up 3 nodes (Lender, Borrower and a Notary)
-
-You then need to connect each Nodejs client to its corresponding node
 </code></pre></div>
-cd cgraph/cgraph-js/
+This brings up 3 nodes (Lender, Borrower and a Notary)</p>
+<p>You then need to connect each Nodejs client to its corresponding node
+<div class="highlight"><pre><span></span><code>cd cgraph/cgraph-js/
 node.js iou-client.js 3000 8080
 // new terminal tab
-node.js iou-client.js 3001 8081</code></p>
+node.js iou-client.js 3001 8081
+</code></pre></div></p>
 <ul>
 <li>You can interact with this HTTP API by using the Insomnia HTTP client json script <code>CGraphInsomnia.json</code> in the <code>resources/scripts</code> folder. </li>
 <li>The order in which you seed the data should go like this: Will provide mutations.<ul>
@@ -668,7 +718,7 @@ cgraph-sample-cordapp
               <span class="md-footer__direction">
                 Next
               </span>
-              Future work
+              Future
             </div>
           </div>
           <div class="md-footer__button md-icon">

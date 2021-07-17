@@ -18,7 +18,7 @@
     
     
       
-        <title>Future work - CGraph</title>
+        <title>Future - CGraph</title>
       
     
     
@@ -66,6 +66,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#analysis" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -92,7 +97,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Future work
+              Future
             
           </span>
         </div>
@@ -432,9 +437,11 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
+        
+      
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        Future work
+        Future
       </a>
       
     </li>
@@ -463,6 +470,23 @@
               </div>
             
             
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
           
           <div class="md-content" data-md-component="content">
             <article class="md-content__inner md-typeset">
@@ -473,9 +497,38 @@
                   </a>
                 
                 
-                  <h1>Future work</h1>
-                
-                
+                <h1 id="analysis">Analysis<a class="headerlink" href="#analysis" title="Permanent link">&para;</a></h1>
+<ul>
+<li>Formal CAP theorem resiliency analysis.</li>
+<li>HTTP network hops upper limits, idempotency</li>
+<li>Comparative study of Graph databases, support more graph technology.</li>
+<li>DGraph trumps ATM IMO but there are neat JVM parings of GQL/GraphDB as mentioned.
+     Lacinia, Crux, Apollo, Relay, etc.=</li>
+<li>What is manual vs. automated?</li>
+<li>Support for native Corda Types as Graphable: Token SDK, Account SDK, Party,  etc</li>
+<li>Concrete typing comparisons on JVM v Go/Graph </li>
+<li>UUID v Strings for graph ids, Dates </li>
+<li>Add persistence before rawUpdates, queue off back of flow.</li>
+<li>Introduce raw maps state i.e GraphMapState</li>
+<li>Shared ownership of “master” schema. Frontend and backend schema segments.</li>
+<li>Upgrade paths analysis with examples</li>
+<li>Add metering. Want to avoid deep, taxing user traversal queries.</li>
+<li>Fully automated “low partition” same machine of Corda and Graph.</li>
+<li>Go process inside Corda? Crazy talk, probably not!</li>
+<li>Strategy for UI development with samples. Server first UIs</li>
+<li>Schema metadata-driven programming</li>
+<li>Full-text search, analytics, subscriptions</li>
+<li>Fully-fledged lambda js server in the cloud with braid.js client, with analysis</li>
+</ul>
+<h1 id="code">Code<a class="headerlink" href="#code" title="Permanent link">&para;</a></h1>
+<ul>
+<li><code>CGraphReconciler</code> -&gt; Corda-Graph reconciliation process w/ availability potential</li>
+<li><code>CGraphSchemaGenerator</code> -&gt; Schema generation tool for user CorDapp states</li>
+<li><code>DGraphServiceFactory</code> -&gt; Start DGraph/Go lang from Corda →</li>
+<li><code>DGraphGRPCClient</code> - from JVM to Go Graph process (DQL CorDapp API)</li>
+</ul>
+<h2 id="contact-me">Contact me<a class="headerlink" href="#contact-me" title="Permanent link">&para;</a></h2>
+<p>Feel free to raise and MR or contact me directly over at <code>eric.mcevoy@r3.com</code></p>
                 
               
               

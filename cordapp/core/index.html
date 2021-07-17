@@ -493,7 +493,7 @@
   
     <li class="md-nav__item">
       <a href="../../future/" class="md-nav__link">
-        Future work
+        Future
       </a>
     </li>
   
@@ -591,55 +591,55 @@
 User states should implement this, and it's member function, the <code>buildEntityMap()</code> function.
  This function returns a property map which the below service will use to generate mutations for the graph.
   Not all state properties need to be in here, only those needed to build a coherent mutation which aligns to the state’s corresponding schema entity entry, in the graph. </p>
-<div class="highlight"><pre><span></span><code>interface GraphableState : LinearState,  QueryableState {
-    /**
-     * @return [MapOfMaps] representation of the implementing contract state.
-     * This map is used by CGraph to generate mutations in order to write persisted states to the graph db instance.
-     * Future enhances may offer more niche annotation support to better track relationships across state model and graph entities.
-     */
-    fun buildEntityMap(): MapOfMaps
-}
+<div class="highlight"><pre><span></span><code><span class="kd">interface</span> <span class="nc">GraphableState</span> <span class="p">:</span> <span class="n">LinearState</span><span class="p">,</span>  <span class="n">QueryableState</span> <span class="p">{</span>
+    <span class="cm">/**</span>
+<span class="cm">     * @return [MapOfMaps] representation of the implementing contract state.</span>
+<span class="cm">     * This map is used by CGraph to generate mutations in order to write persisted states to the graph db instance.</span>
+<span class="cm">     * Future enhances may offer more niche annotation support to better track relationships across state model and graph entities.</span>
+<span class="cm">     */</span>
+    <span class="kd">fun</span> <span class="nf">buildEntityMap</span><span class="p">():</span> <span class="n">MapOfMaps</span>
+<span class="p">}</span>
 </code></pre></div>
 <h2 id="cgraphservice">CGraphService<a class="headerlink" href="#cgraphservice" title="Permanent link">&para;</a></h2>
 <p>This is the heart of CGraph. This service detects new ledger entries of type <code>GraphableState</code> and transforms them by passing the result of the <code>buildEntityMap()</code> function into the generator.
  Here's a snippet of the core function.</p>
-<div class="highlight"><pre><span></span><code>private fun registerGraphableUpdatesSubscription(serviceHub: ServiceHub): Subscription  {
-        logger.debug(&quot;Registering CGraph Service ($nodeOrganisation) for Vault Raw Updates.&quot;)
-        return serviceHub.vaultService.rawUpdates.subscribe { vaultUpdate -&gt;
-            val graphables = vaultUpdate.produced
-                .filter {
-                    (it.state.data is GraphableState)
-                }
-                .map { state -&gt;
-                    val toGraph = (state.state.data as GraphableState)
-                    if(vaultUpdate.consumed
-                            .filter {
-                                it.state.data is GraphableState
-                             }
-                            .any { graphableInputs -&gt;
-                                toGraph.linearId.id == (graphableInputs.state.data as GraphableState).linearId.id 
-                            }
-                    ) {
-                        graphQLMutationGenerator.processStates(toGraph.buildEntityMap(), TransactionType.GENERAL)
-                    }
-                    else {
-                        graphQLMutationGenerator.processStates(toGraph.buildEntityMap(), TransactionType.ISSUANCE)
-                    }
-                }
-            if (graphables.isNotEmpty()) {
-                graphables.forEach { mutation -&gt;
-                    var request: MapOfMaps? = null
-                    try {
-                        request = performGraphQLRequest(mutation, GraphQLRequestType.MUTATION)
-                    } catch (ex: Exception) {
-                        logger.info(&quot;GraphQL request failed: $ex&quot;)
-                    } finally {
-                        logger.info(&quot;GraphQL request success for ${request}&quot;)
-                    }
-                }
-            }
-        }
-    }
+<div class="highlight"><pre><span></span><code><span class="kd">private</span> <span class="kd">fun</span> <span class="nf">registerGraphableUpdatesSubscription</span><span class="p">(</span><span class="n">serviceHub</span><span class="p">:</span> <span class="n">ServiceHub</span><span class="p">):</span> <span class="n">Subscription</span>  <span class="p">{</span>
+        <span class="n">logger</span><span class="p">.</span><span class="na">debug</span><span class="p">(</span><span class="s">&quot;Registering CGraph Service (</span><span class="si">$</span><span class="n">nodeOrganisation</span><span class="s">) for Vault Raw Updates.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">serviceHub</span><span class="p">.</span><span class="na">vaultService</span><span class="p">.</span><span class="na">rawUpdates</span><span class="p">.</span><span class="na">subscribe</span> <span class="p">{</span> <span class="n">vaultUpdate</span> <span class="o">-&gt;</span>
+            <span class="kd">val</span> <span class="nv">graphables</span> <span class="o">=</span> <span class="n">vaultUpdate</span><span class="p">.</span><span class="na">produced</span>
+                <span class="p">.</span><span class="na">filter</span> <span class="p">{</span>
+                    <span class="p">(</span><span class="nb">it</span><span class="p">.</span><span class="na">state</span><span class="p">.</span><span class="na">data</span> <span class="k">is</span> <span class="n">GraphableState</span><span class="p">)</span>
+                <span class="p">}</span>
+                <span class="p">.</span><span class="na">map</span> <span class="p">{</span> <span class="n">state</span> <span class="o">-&gt;</span>
+                    <span class="kd">val</span> <span class="nv">toGraph</span> <span class="o">=</span> <span class="p">(</span><span class="n">state</span><span class="p">.</span><span class="na">state</span><span class="p">.</span><span class="na">data</span> <span class="k">as</span> <span class="n">GraphableState</span><span class="p">)</span>
+                    <span class="k">if</span><span class="p">(</span><span class="n">vaultUpdate</span><span class="p">.</span><span class="na">consumed</span>
+                            <span class="p">.</span><span class="na">filter</span> <span class="p">{</span>
+                                <span class="nb">it</span><span class="p">.</span><span class="na">state</span><span class="p">.</span><span class="na">data</span> <span class="k">is</span> <span class="n">GraphableState</span>
+                             <span class="p">}</span>
+                            <span class="p">.</span><span class="na">any</span> <span class="p">{</span> <span class="n">graphableInputs</span> <span class="o">-&gt;</span>
+                                <span class="n">toGraph</span><span class="p">.</span><span class="na">linearId</span><span class="p">.</span><span class="na">id</span> <span class="o">==</span> <span class="p">(</span><span class="n">graphableInputs</span><span class="p">.</span><span class="na">state</span><span class="p">.</span><span class="na">data</span> <span class="k">as</span> <span class="n">GraphableState</span><span class="p">).</span><span class="na">linearId</span><span class="p">.</span><span class="na">id</span> 
+                            <span class="p">}</span>
+                    <span class="p">)</span> <span class="p">{</span>
+                        <span class="n">graphQLMutationGenerator</span><span class="p">.</span><span class="na">processStates</span><span class="p">(</span><span class="n">toGraph</span><span class="p">.</span><span class="na">buildEntityMap</span><span class="p">(),</span> <span class="n">TransactionType</span><span class="p">.</span><span class="na">GENERAL</span><span class="p">)</span>
+                    <span class="p">}</span>
+                    <span class="k">else</span> <span class="p">{</span>
+                        <span class="n">graphQLMutationGenerator</span><span class="p">.</span><span class="na">processStates</span><span class="p">(</span><span class="n">toGraph</span><span class="p">.</span><span class="na">buildEntityMap</span><span class="p">(),</span> <span class="n">TransactionType</span><span class="p">.</span><span class="na">ISSUANCE</span><span class="p">)</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">graphables</span><span class="p">.</span><span class="na">isNotEmpty</span><span class="p">())</span> <span class="p">{</span>
+                <span class="n">graphables</span><span class="p">.</span><span class="na">forEach</span> <span class="p">{</span> <span class="n">mutation</span> <span class="o">-&gt;</span>
+                    <span class="kd">var</span> <span class="nv">request</span><span class="p">:</span> <span class="n">MapOfMaps? </span><span class="o">=</span> <span class="kc">null</span>
+                    <span class="k">try</span> <span class="p">{</span>
+                        <span class="n">request</span> <span class="o">=</span> <span class="n">performGraphQLRequest</span><span class="p">(</span><span class="n">mutation</span><span class="p">,</span> <span class="n">GraphQLRequestType</span><span class="p">.</span><span class="na">MUTATION</span><span class="p">)</span>
+                    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">ex</span><span class="p">:</span> <span class="n">Exception</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">logger</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;GraphQL request failed: </span><span class="si">$</span><span class="n">ex</span><span class="s">&quot;</span><span class="p">)</span>
+                    <span class="p">}</span> <span class="k">finally</span> <span class="p">{</span>
+                        <span class="n">logger</span><span class="p">.</span><span class="na">info</span><span class="p">(</span><span class="s">&quot;GraphQL request success for </span><span class="si">${</span><span class="n">request</span><span class="si">}</span><span class="s">&quot;</span><span class="p">)</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
 </code></pre></div>
 <h2 id="graphqlmutationgenerator">GraphQLMutationGenerator<a class="headerlink" href="#graphqlmutationgenerator" title="Permanent link">&para;</a></h2>
 <p>This class generates a mutation based on the shape of the provided state property map. There are two types of mutations supported currenty

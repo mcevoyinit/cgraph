@@ -66,6 +66,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#classic-tier-qualms" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -294,9 +299,44 @@
       
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Productivity
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         Productivity
       </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#classic-tier-qualms" class="md-nav__link">
+    Classic tier qualms
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#schema-driven-programming" class="md-nav__link">
+    Schema driven programming
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -437,7 +477,7 @@
   
     <li class="md-nav__item">
       <a href="../../future/" class="md-nav__link">
-        Future work
+        Future
       </a>
     </li>
   
@@ -465,6 +505,43 @@
               </div>
             
             
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#classic-tier-qualms" class="md-nav__link">
+    Classic tier qualms
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#schema-driven-programming" class="md-nav__link">
+    Schema driven programming
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
           
           <div class="md-content" data-md-component="content">
             <article class="md-content__inner md-typeset">
@@ -477,27 +554,67 @@
                 
                   <h1>Productivity</h1>
                 
-                <p>From a solutions engineering perspective, we must consider the productivity of various actors in the Corda software engineering life cycle in order to increase the likelihood of project success. From a Corda perspective, we typically see an extended 4 tier business programming architecture. Many community thought leaders have sought to automate this to improve the lives of CorDapp developers. We saw this succinctly summarised in a blog post by Bond 180 Corda integration options in 2020. </p>
-<p>Classic tier qualms
-This paradigm frequently comes at a high cost.</p>
-<p>Even though it’s Corda, the pattern we all use is more or less CRUD, which is very tedious for even basic access to simple data points. CRUD is clunky and requires special effort to give me the data I exactly want in a query.  </p>
+                <p>From a Corda solutions engineering perspective, we must consider the productivity of various actors in the Corda software engineering life cycle in order to increase the likelihood of project success. 
+From a Corda perspective, we typically see an extended 4 tier business programming architecture. 
+Many community thought leaders have sought to automate this to improve the lives of CorDapp developers. 
+We saw this succinctly summarised in a blog post by Bond 180 Corda integration options in 2020. </p>
+<h2 id="classic-tier-qualms">Classic tier qualms<a class="headerlink" href="#classic-tier-qualms" title="Permanent link">&para;</a></h2>
+<p>This paradigm frequently comes at a high cost.</p>
+<ul>
+<li>
+<p>Even though it’s Corda, the pattern we all use is more or less CRUD, which can be tedious for accessing simple data points. 
+CRUD is clunky and requires special effort to give me the data I exactly want in a query.  </p>
+</li>
+<li>
 <p>Often I just want to display what’s in the database on my screen. </p>
-<p>Why do I need to write, deploy a maintain intermediate, “middle man” relay layers? </p>
-<p>Could the web service be left for custom business logic? </p>
+</li>
+<li>Why do I need to write, deploy a maintain intermediate, “middle man” relay layers? </li>
+<li>Could the web service be left for custom business logic? </li>
+<li>
 <p>Why does the database have to be in the bottom layer? </p>
+</li>
+<li>
 <p>We certainly don’t want to stick DSL SQL in our client.  It’s not within frontend vernacular to talk to  Postgres/MySQL/Vault Queries.</p>
+</li>
+<li>
 <p>I am constantly writing modifying and maintaining CRUD layers yet making changes in this 4 tier setup is troublesome. </p>
+</li>
+<li>
 <p>Stressful for backend team be “one sprint ahead” of other roles e.g front end, test, data engineers.</p>
+</li>
+<li>
 <p>Backend changes often lead to cascading breakages on other teams components.</p>
+</li>
+<li>
 <p>UIs break, web-server endpoints suddenly don’t work, packages, like RPC clients, need to be recompiled. There’s way more to it. </p>
+</li>
+<li>
 <p>These teams need a common data contract of reference. </p>
-<p>The question every new developer asks themselves can finally be raised again; why can’t my view layer talk directly to my data layer? </p>
-<p>For that there would need to be an API in the database. </p>
-<p>Schema driven programming
-DGraph flips the &frac34; classic tiered model around which could yield high productivity gains.</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code>The question every new developer asks themselves can finally be raised again; why can’t my view layer talk directly to my data layer? 
+
+For that there would need to be an API in the database. 
+</code></pre></div>
+<h2 id="schema-driven-programming">Schema driven programming<a class="headerlink" href="#schema-driven-programming" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p>DGraph flips the &frac34; classic tiered model around which could yield high productivity gains.</p>
+</li>
+<li>
 <p>Once we define the data model via the schema, DGraph can consume this and generate the CRUD API for us.  This CRUD API is adjusted as the schema is adjusted. Front end and backend developers get to go to work straight away, in parallel against a common contract of reference. This alone is a key differentiator of DGraph.</p>
+</li>
+<li>
 <p>We move the DB from layer 3 to layer 2. One thing this means is we need a DSL that is native to browser/clients. This is where GraphQL comes in. GraphQL is the future DSL of the internet that is easy to work with and use in the browser/mobile environment. It enables us to talk to DB directly. </p>
-<p>It gets even better. From the client, we don’t have to worry about knowing whether to talk to the DB or the webserver. Custom GraphQL queries and mutations, also defined on the schema, can inform the database server when to call them versus queries when to talk directly to the DB. DGraph lambdas provide Nodejs (JVM support coming this summer) to call externally. This is where we can start Corda flows over JSON RPC. The sample uses Cordite Braid at the moment but will integrate with Corda 5 embedded server. I expand on this in the solution architecture section but keep the “new” layer 3 in mind.</p>
+</li>
+<li>
+<p>It gets even better. From the client, we don’t have to worry about knowing whether to talk to the DB or the webserver. 
+Custom GraphQL queries and mutations, also defined on the schema, can inform the database server when to call them versus queries when to talk directly to the DB. 
+DGraph lambdas provide Nodejs (JVM support coming this summer) to call externally. 
+This is where we can start Corda flows over JSON RPC. The sample uses Cordite Braid at the moment but will integrate with Corda 5 embedded server. 
+I expand on this in the solution architecture section but keep the “new” layer 3 in mind.</p>
+</li>
+</ul>
                 
               
               

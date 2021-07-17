@@ -527,7 +527,7 @@
   
     <li class="md-nav__item">
       <a href="../../future/" class="md-nav__link">
-        Future work
+        Future
       </a>
     </li>
   
@@ -703,30 +703,30 @@ type Currency {
 }
 </code></pre></div>
 <h2 id="state-entity-mapping">State - Entity Mapping<a class="headerlink" href="#state-entity-mapping" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>@BelongsToContract(IOUContract::class)
-data class IOUState(val value: Int,
-                    val currency: UUID,
-                    val lender: Party,
-                    val lenderMemberId: UUID,
-                    val borrower: Party,
-                    val borrowerMemberId: UUID,
-                    override val linearId: UniqueIdentifier
-) : GraphableState {
+<div class="highlight"><pre><span></span><code><span class="nd">@BelongsToContract</span><span class="p">(</span><span class="n">IOUContract</span><span class="o">::</span><span class="n">class</span><span class="p">)</span>
+<span class="kd">data</span> <span class="kd">class</span> <span class="nc">IOUState</span><span class="p">(</span><span class="kd">val</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span>
+                    <span class="kd">val</span> <span class="nv">currency</span><span class="p">:</span> <span class="n">UUID</span><span class="p">,</span>
+                    <span class="kd">val</span> <span class="nv">lender</span><span class="p">:</span> <span class="n">Party</span><span class="p">,</span>
+                    <span class="kd">val</span> <span class="nv">lenderMemberId</span><span class="p">:</span> <span class="n">UUID</span><span class="p">,</span>
+                    <span class="kd">val</span> <span class="nv">borrower</span><span class="p">:</span> <span class="n">Party</span><span class="p">,</span>
+                    <span class="kd">val</span> <span class="nv">borrowerMemberId</span><span class="p">:</span> <span class="n">UUID</span><span class="p">,</span>
+                    <span class="kd">override</span> <span class="kd">val</span> <span class="nv">linearId</span><span class="p">:</span> <span class="n">UniqueIdentifier</span>
+<span class="p">)</span> <span class="p">:</span> <span class="n">GraphableState</span> <span class="p">{</span>
 
-    //** The public keys of the involved parties. *//
-    override val participants: List&lt;AbstractParty&gt; get() = listOf(lender, borrower)
+    <span class="c1">//** The public keys of the involved parties. *//</span>
+    <span class="kd">override</span> <span class="kd">val</span> <span class="nv">participants</span><span class="p">:</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">AbstractParty</span><span class="o">&gt;</span> <span class="k">get</span><span class="p">()</span> <span class="o">=</span> <span class="n">listOf</span><span class="p">(</span><span class="n">lender</span><span class="p">,</span> <span class="n">borrower</span><span class="p">)</span>
 
-    override fun buildEntityMap(): MapOfMaps {
-        return mapOf(
-            &quot;entityType&quot; to &quot;IOU&quot;,
-            &quot;id&quot; to linearId.id.toString(),
-            &quot;value&quot;  to value,
-            &quot;currency&quot; to currency,
-            &quot;lender&quot; to lenderMemberId,
-            &quot;borrower&quot; to borrowerMemberId
-        )
-    }
-}
+    <span class="kd">override</span> <span class="kd">fun</span> <span class="nf">buildEntityMap</span><span class="p">():</span> <span class="n">MapOfMaps</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">mapOf</span><span class="p">(</span>
+            <span class="s">&quot;entityType&quot;</span> <span class="n">to</span> <span class="s">&quot;IOU&quot;</span><span class="p">,</span>
+            <span class="s">&quot;id&quot;</span> <span class="n">to</span> <span class="n">linearId</span><span class="p">.</span><span class="na">id</span><span class="p">.</span><span class="na">toString</span><span class="p">(),</span>
+            <span class="s">&quot;value&quot;</span>  <span class="n">to</span> <span class="n">value</span><span class="p">,</span>
+            <span class="s">&quot;currency&quot;</span> <span class="n">to</span> <span class="n">currency</span><span class="p">,</span>
+            <span class="s">&quot;lender&quot;</span> <span class="n">to</span> <span class="n">lenderMemberId</span><span class="p">,</span>
+            <span class="s">&quot;borrower&quot;</span> <span class="n">to</span> <span class="n">borrowerMemberId</span>
+        <span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 <h2 id="flows">Flows<a class="headerlink" href="#flows" title="Permanent link">&para;</a></h2>
 <p>There are 4 flows in the CorDapp</p>
@@ -735,155 +735,155 @@ data class IOUState(val value: Int,
 <p>The example CorDapp contains a <code>IOUBraidServer</code>. Future enhancements may create this server for you based on <code>GrapableFlow</code> extensions.</p>
 <h2 id="testing">Testing<a class="headerlink" href="#testing" title="Permanent link">&para;</a></h2>
 <p>E2E Integration test can be found at <code>CGraphIOUDriverTesting</code></p>
-<p><div class="highlight"><pre><span></span><code>@Test
-fun `graph enabled advanced iou cordapp e2e processing`() {
-    driver(DriverParameters(
-        startNodesInProcess = true,
-        networkParameters = testNetworkParameters(minimumPlatformVersion = 4, notaries = emptyList())
-    )) {
-        val (lender, borrower) = listOf(
-            startNode(
-                parameters = NodeParameters(
-                    providedName = DUMMY_LENDER_NAME,
-                    rpcUsers = listOf(user),
-                    additionalCordapps = setOf(
-                        CGraph.Cordapps.Example.withConfig(
-                            mapOf(
-                                &quot;braidServerPort&quot; to 9090
-                            )
-                        ),
-                        CGraph.Cordapps.Core.withConfig(
-                            mapOf(
-                                &quot;graphQLUrl&quot; to DGRAPH_URL_LENDER,
-                                &quot;graphQLToken&quot; to DGRAPH_TOKEN_LENDER,
-                                &quot;graphBraidServerPort&quot; to 8080
-                            )
-                        )
-                    )
-                )
-            ),
-            startNode(
-                parameters = NodeParameters(
-                    providedName = DUMMY_BORROWER_NAME,
-                    rpcUsers = listOf(user),
-                    additionalCordapps = setOf(
-                        CGraph.Cordapps.Example.withConfig(
-                            mapOf(
-                                &quot;braidServerPort&quot; to 9091
-                            )
-                        ),
-                        CGraph.Cordapps.Core.withConfig(
-                            mapOf(
-                                &quot;graphQLUrl&quot; to DGRAPH_URL_BORROWER,
-                                &quot;graphQLToken&quot; to DGRAPH_TOKEN_BORROWER,
-                                &quot;graphBraidServerPort&quot; to 8081
-                            )
-                        )
-                    )
-                )
-            )
-        ).map { it.getOrThrow() }
+<p><div class="highlight"><pre><span></span><code><span class="nd">@Test</span>
+<span class="kd">fun</span> <span class="nf">`graph enabled advanced iou cordapp e2e processing`</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">driver</span><span class="p">(</span><span class="n">DriverParameters</span><span class="p">(</span>
+        <span class="n">startNodesInProcess</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="n">networkParameters</span> <span class="o">=</span> <span class="n">testNetworkParameters</span><span class="p">(</span><span class="n">minimumPlatformVersion</span> <span class="o">=</span> <span class="m">4</span><span class="p">,</span> <span class="n">notaries</span> <span class="o">=</span> <span class="n">emptyList</span><span class="p">())</span>
+    <span class="p">))</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="p">(</span><span class="nv">lender</span><span class="p">,</span> <span class="nv">borrower</span><span class="p">)</span> <span class="o">=</span> <span class="n">listOf</span><span class="p">(</span>
+            <span class="n">startNode</span><span class="p">(</span>
+                <span class="n">parameters</span> <span class="o">=</span> <span class="n">NodeParameters</span><span class="p">(</span>
+                    <span class="n">providedName</span> <span class="o">=</span> <span class="n">DUMMY_LENDER_NAME</span><span class="p">,</span>
+                    <span class="n">rpcUsers</span> <span class="o">=</span> <span class="n">listOf</span><span class="p">(</span><span class="n">user</span><span class="p">),</span>
+                    <span class="n">additionalCordapps</span> <span class="o">=</span> <span class="n">setOf</span><span class="p">(</span>
+                        <span class="n">CGraph</span><span class="p">.</span><span class="na">Cordapps</span><span class="p">.</span><span class="na">Example</span><span class="p">.</span><span class="na">withConfig</span><span class="p">(</span>
+                            <span class="n">mapOf</span><span class="p">(</span>
+                                <span class="s">&quot;braidServerPort&quot;</span> <span class="n">to</span> <span class="m">9090</span>
+                            <span class="p">)</span>
+                        <span class="p">),</span>
+                        <span class="n">CGraph</span><span class="p">.</span><span class="na">Cordapps</span><span class="p">.</span><span class="na">Core</span><span class="p">.</span><span class="na">withConfig</span><span class="p">(</span>
+                            <span class="n">mapOf</span><span class="p">(</span>
+                                <span class="s">&quot;graphQLUrl&quot;</span> <span class="n">to</span> <span class="n">DGRAPH_URL_LENDER</span><span class="p">,</span>
+                                <span class="s">&quot;graphQLToken&quot;</span> <span class="n">to</span> <span class="n">DGRAPH_TOKEN_LENDER</span><span class="p">,</span>
+                                <span class="s">&quot;graphBraidServerPort&quot;</span> <span class="n">to</span> <span class="m">8080</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="p">),</span>
+            <span class="n">startNode</span><span class="p">(</span>
+                <span class="n">parameters</span> <span class="o">=</span> <span class="n">NodeParameters</span><span class="p">(</span>
+                    <span class="n">providedName</span> <span class="o">=</span> <span class="n">DUMMY_BORROWER_NAME</span><span class="p">,</span>
+                    <span class="n">rpcUsers</span> <span class="o">=</span> <span class="n">listOf</span><span class="p">(</span><span class="n">user</span><span class="p">),</span>
+                    <span class="n">additionalCordapps</span> <span class="o">=</span> <span class="n">setOf</span><span class="p">(</span>
+                        <span class="n">CGraph</span><span class="p">.</span><span class="na">Cordapps</span><span class="p">.</span><span class="na">Example</span><span class="p">.</span><span class="na">withConfig</span><span class="p">(</span>
+                            <span class="n">mapOf</span><span class="p">(</span>
+                                <span class="s">&quot;braidServerPort&quot;</span> <span class="n">to</span> <span class="m">9091</span>
+                            <span class="p">)</span>
+                        <span class="p">),</span>
+                        <span class="n">CGraph</span><span class="p">.</span><span class="na">Cordapps</span><span class="p">.</span><span class="na">Core</span><span class="p">.</span><span class="na">withConfig</span><span class="p">(</span>
+                            <span class="n">mapOf</span><span class="p">(</span>
+                                <span class="s">&quot;graphQLUrl&quot;</span> <span class="n">to</span> <span class="n">DGRAPH_URL_BORROWER</span><span class="p">,</span>
+                                <span class="s">&quot;graphQLToken&quot;</span> <span class="n">to</span> <span class="n">DGRAPH_TOKEN_BORROWER</span><span class="p">,</span>
+                                <span class="s">&quot;graphBraidServerPort&quot;</span> <span class="n">to</span> <span class="m">8081</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">).</span><span class="na">map</span> <span class="p">{</span> <span class="nb">it</span><span class="p">.</span><span class="na">getOrThrow</span><span class="p">()</span> <span class="p">}</span>
 
-        val member1id = UUID.randomUUID().toString()
-        val member2id = UUID.randomUUID().toString()
+        <span class="kd">val</span> <span class="nv">member1id</span> <span class="o">=</span> <span class="n">UUID</span><span class="p">.</span><span class="na">randomUUID</span><span class="p">().</span><span class="na">toString</span><span class="p">()</span>
+        <span class="kd">val</span> <span class="nv">member2id</span> <span class="o">=</span> <span class="n">UUID</span><span class="p">.</span><span class="na">randomUUID</span><span class="p">().</span><span class="na">toString</span><span class="p">()</span>
 
-        val borrowerParty = borrower.nodeInfo.legalIdentities.first()
+        <span class="kd">val</span> <span class="nv">borrowerParty</span> <span class="o">=</span> <span class="n">borrower</span><span class="p">.</span><span class="na">nodeInfo</span><span class="p">.</span><span class="na">legalIdentities</span><span class="p">.</span><span class="na">first</span><span class="p">()</span>
 
-        println(&quot;Dropping data from graphs databases&quot;)
-        borrower.rpc.startFlowDynamic(DropGraphDataFlow::class.java)
-        lender.rpc.startFlowDynamic(DropGraphDataFlow::class.java)
+        <span class="n">println</span><span class="p">(</span><span class="s">&quot;Dropping data from graphs databases&quot;</span><span class="p">)</span>
+        <span class="n">borrower</span><span class="p">.</span><span class="na">rpc</span><span class="p">.</span><span class="na">startFlowDynamic</span><span class="p">(</span><span class="n">DropGraphDataFlow</span><span class="o">::</span><span class="n">class</span><span class="p">.</span><span class="na">java</span><span class="p">)</span>
+        <span class="n">lender</span><span class="p">.</span><span class="na">rpc</span><span class="p">.</span><span class="na">startFlowDynamic</span><span class="p">(</span><span class="n">DropGraphDataFlow</span><span class="o">::</span><span class="n">class</span><span class="p">.</span><span class="na">java</span><span class="p">)</span>
 
-        println(&quot;Writing Members to Graph&quot;)
-        lender.rpc.startFlowDynamic(
-            PostGraphQLFlow::class.java,
-            UPSERT_MEMBER_GQL(
-                id = member1id,
-                cordaNodeName = lender.nodeInfo.legalIdentities.first().name.graphableString()
-            ),
-            GraphQLRequestType.MUTATION
-        )
-        lender.rpc.startFlowDynamic(
-            PostGraphQLFlow::class.java,
-            UPSERT_MEMBER_GQL(
-                id = member2id,
-                cordaNodeName = borrower.nodeInfo.legalIdentities.first().name.graphableString()
-            ),
-            GraphQLRequestType.MUTATION
-        )
+        <span class="n">println</span><span class="p">(</span><span class="s">&quot;Writing Members to Graph&quot;</span><span class="p">)</span>
+        <span class="n">lender</span><span class="p">.</span><span class="na">rpc</span><span class="p">.</span><span class="na">startFlowDynamic</span><span class="p">(</span>
+            <span class="n">PostGraphQLFlow</span><span class="o">::</span><span class="n">class</span><span class="p">.</span><span class="na">java</span><span class="p">,</span>
+            <span class="n">UPSERT_MEMBER_GQL</span><span class="p">(</span>
+                <span class="n">id</span> <span class="o">=</span> <span class="n">member1id</span><span class="p">,</span>
+                <span class="n">cordaNodeName</span> <span class="o">=</span> <span class="n">lender</span><span class="p">.</span><span class="na">nodeInfo</span><span class="p">.</span><span class="na">legalIdentities</span><span class="p">.</span><span class="na">first</span><span class="p">().</span><span class="na">name</span><span class="p">.</span><span class="na">graphableString</span><span class="p">()</span>
+            <span class="p">),</span>
+            <span class="n">GraphQLRequestType</span><span class="p">.</span><span class="na">MUTATION</span>
+        <span class="p">)</span>
+        <span class="n">lender</span><span class="p">.</span><span class="na">rpc</span><span class="p">.</span><span class="na">startFlowDynamic</span><span class="p">(</span>
+            <span class="n">PostGraphQLFlow</span><span class="o">::</span><span class="n">class</span><span class="p">.</span><span class="na">java</span><span class="p">,</span>
+            <span class="n">UPSERT_MEMBER_GQL</span><span class="p">(</span>
+                <span class="n">id</span> <span class="o">=</span> <span class="n">member2id</span><span class="p">,</span>
+                <span class="n">cordaNodeName</span> <span class="o">=</span> <span class="n">borrower</span><span class="p">.</span><span class="na">nodeInfo</span><span class="p">.</span><span class="na">legalIdentities</span><span class="p">.</span><span class="na">first</span><span class="p">().</span><span class="na">name</span><span class="p">.</span><span class="na">graphableString</span><span class="p">()</span>
+            <span class="p">),</span>
+            <span class="n">GraphQLRequestType</span><span class="p">.</span><span class="na">MUTATION</span>
+        <span class="p">)</span>
 
-        borrower.rpc.startFlowDynamic(
-            PostGraphQLFlow::class.java,
-            UPSERT_MEMBER_GQL(
-                id = member2id,
-                cordaNodeName = borrower.nodeInfo.legalIdentities.first().name.graphableString()
-            ),
-            GraphQLRequestType.MUTATION
-        )
+        <span class="n">borrower</span><span class="p">.</span><span class="na">rpc</span><span class="p">.</span><span class="na">startFlowDynamic</span><span class="p">(</span>
+            <span class="n">PostGraphQLFlow</span><span class="o">::</span><span class="n">class</span><span class="p">.</span><span class="na">java</span><span class="p">,</span>
+            <span class="n">UPSERT_MEMBER_GQL</span><span class="p">(</span>
+                <span class="n">id</span> <span class="o">=</span> <span class="n">member2id</span><span class="p">,</span>
+                <span class="n">cordaNodeName</span> <span class="o">=</span> <span class="n">borrower</span><span class="p">.</span><span class="na">nodeInfo</span><span class="p">.</span><span class="na">legalIdentities</span><span class="p">.</span><span class="na">first</span><span class="p">().</span><span class="na">name</span><span class="p">.</span><span class="na">graphableString</span><span class="p">()</span>
+            <span class="p">),</span>
+            <span class="n">GraphQLRequestType</span><span class="p">.</span><span class="na">MUTATION</span>
+        <span class="p">)</span>
 
-        borrower.rpc.startFlowDynamic(
-            PostGraphQLFlow::class.java,
-            UPSERT_MEMBER_GQL(
-                id = member1id,
-                cordaNodeName = lender.nodeInfo.legalIdentities.first().name.graphableString()
-            ),
-            GraphQLRequestType.MUTATION
-        )
+        <span class="n">borrower</span><span class="p">.</span><span class="na">rpc</span><span class="p">.</span><span class="na">startFlowDynamic</span><span class="p">(</span>
+            <span class="n">PostGraphQLFlow</span><span class="o">::</span><span class="n">class</span><span class="p">.</span><span class="na">java</span><span class="p">,</span>
+            <span class="n">UPSERT_MEMBER_GQL</span><span class="p">(</span>
+                <span class="n">id</span> <span class="o">=</span> <span class="n">member1id</span><span class="p">,</span>
+                <span class="n">cordaNodeName</span> <span class="o">=</span> <span class="n">lender</span><span class="p">.</span><span class="na">nodeInfo</span><span class="p">.</span><span class="na">legalIdentities</span><span class="p">.</span><span class="na">first</span><span class="p">().</span><span class="na">name</span><span class="p">.</span><span class="na">graphableString</span><span class="p">()</span>
+            <span class="p">),</span>
+            <span class="n">GraphQLRequestType</span><span class="p">.</span><span class="na">MUTATION</span>
+        <span class="p">)</span>
 
-        println(&quot;Writing Currency to Ledger and Graph of both parties&quot;)
-        lender.rpc.startFlowDynamic(IssueCurrencyFlow::class.java,&quot;Pound Sterling&quot;, &quot;GBP&quot;, listOf(borrowerParty)).returnValue.getOrThrow()
+        <span class="n">println</span><span class="p">(</span><span class="s">&quot;Writing Currency to Ledger and Graph of both parties&quot;</span><span class="p">)</span>
+        <span class="n">lender</span><span class="p">.</span><span class="na">rpc</span><span class="p">.</span><span class="na">startFlowDynamic</span><span class="p">(</span><span class="n">IssueCurrencyFlow</span><span class="o">::</span><span class="n">class</span><span class="p">.</span><span class="na">java</span><span class="p">,</span><span class="s">&quot;Pound Sterling&quot;</span><span class="p">,</span> <span class="s">&quot;GBP&quot;</span><span class="p">,</span> <span class="n">listOf</span><span class="p">(</span><span class="n">borrowerParty</span><span class="p">)).</span><span class="na">returnValue</span><span class="p">.</span><span class="na">getOrThrow</span><span class="p">()</span>
 
-        print(&quot;Wait for entry to reach both lender and borrower graphs&quot;)
-        Thread.sleep(1000)
+        <span class="n">print</span><span class="p">(</span><span class="s">&quot;Wait for entry to reach both lender and borrower graphs&quot;</span><span class="p">)</span>
+        <span class="n">Thread</span><span class="p">.</span><span class="na">sleep</span><span class="p">(</span><span class="m">1000</span><span class="p">)</span>
 
-        lender.verifyCurrency(&quot;GBP&quot;)
-        borrower.verifyCurrency(&quot;GBP&quot;)
+        <span class="n">lender</span><span class="p">.</span><span class="na">verifyCurrency</span><span class="p">(</span><span class="s">&quot;GBP&quot;</span><span class="p">)</span>
+        <span class="n">borrower</span><span class="p">.</span><span class="na">verifyCurrency</span><span class="p">(</span><span class="s">&quot;GBP&quot;</span><span class="p">)</span>
 
-        print(&quot;Issue balance into both ledgers and thus graphs&quot;)
-        lender.rpc.startFlowDynamic(IssueBalanceFlow::class.java,&quot;GBP&quot;, 100000).returnValue.getOrThrow()
-        borrower.rpc.startFlowDynamic(IssueBalanceFlow::class.java,&quot;GBP&quot;, 0).returnValue.getOrThrow()
+        <span class="n">print</span><span class="p">(</span><span class="s">&quot;Issue balance into both ledgers and thus graphs&quot;</span><span class="p">)</span>
+        <span class="n">lender</span><span class="p">.</span><span class="na">rpc</span><span class="p">.</span><span class="na">startFlowDynamic</span><span class="p">(</span><span class="n">IssueBalanceFlow</span><span class="o">::</span><span class="n">class</span><span class="p">.</span><span class="na">java</span><span class="p">,</span><span class="s">&quot;GBP&quot;</span><span class="p">,</span> <span class="m">100000</span><span class="p">).</span><span class="na">returnValue</span><span class="p">.</span><span class="na">getOrThrow</span><span class="p">()</span>
+        <span class="n">borrower</span><span class="p">.</span><span class="na">rpc</span><span class="p">.</span><span class="na">startFlowDynamic</span><span class="p">(</span><span class="n">IssueBalanceFlow</span><span class="o">::</span><span class="n">class</span><span class="p">.</span><span class="na">java</span><span class="p">,</span><span class="s">&quot;GBP&quot;</span><span class="p">,</span> <span class="m">0</span><span class="p">).</span><span class="na">returnValue</span><span class="p">.</span><span class="na">getOrThrow</span><span class="p">()</span>
 
-        lender.verifyBalance(&quot;Pound Sterling&quot;, &quot;GBP&quot;, 100000)
-        borrower.verifyBalance(&quot;Pound Sterling&quot;, &quot;GBP&quot;, 0)
+        <span class="n">lender</span><span class="p">.</span><span class="na">verifyBalance</span><span class="p">(</span><span class="s">&quot;Pound Sterling&quot;</span><span class="p">,</span> <span class="s">&quot;GBP&quot;</span><span class="p">,</span> <span class="m">100000</span><span class="p">)</span>
+        <span class="n">borrower</span><span class="p">.</span><span class="na">verifyBalance</span><span class="p">(</span><span class="s">&quot;Pound Sterling&quot;</span><span class="p">,</span> <span class="s">&quot;GBP&quot;</span><span class="p">,</span> <span class="m">0</span><span class="p">)</span>
 
-        print(&quot;Wait for balance entry to reach both lender and borrower graphs&quot;)
-        Thread.sleep(1000)
+        <span class="n">print</span><span class="p">(</span><span class="s">&quot;Wait for balance entry to reach both lender and borrower graphs&quot;</span><span class="p">)</span>
+        <span class="n">Thread</span><span class="p">.</span><span class="na">sleep</span><span class="p">(</span><span class="m">1000</span><span class="p">)</span>
 
-        print(&quot;Writing IOU to both ledgers and graphs, with updated balances in both also&quot;)
-        lender.rpc.startFlowDynamic(IssueIOUFlow::class.java, 50000, &quot;Pound Sterling&quot;, borrowerParty).returnValue.getOrThrow()
+        <span class="n">print</span><span class="p">(</span><span class="s">&quot;Writing IOU to both ledgers and graphs, with updated balances in both also&quot;</span><span class="p">)</span>
+        <span class="n">lender</span><span class="p">.</span><span class="na">rpc</span><span class="p">.</span><span class="na">startFlowDynamic</span><span class="p">(</span><span class="n">IssueIOUFlow</span><span class="o">::</span><span class="n">class</span><span class="p">.</span><span class="na">java</span><span class="p">,</span> <span class="m">50000</span><span class="p">,</span> <span class="s">&quot;Pound Sterling&quot;</span><span class="p">,</span> <span class="n">borrowerParty</span><span class="p">).</span><span class="na">returnValue</span><span class="p">.</span><span class="na">getOrThrow</span><span class="p">()</span>
 
-        // Lender balance deducted. Borrower balance credited
-        lender.verifyBalance(&quot;Pound Sterling&quot;, &quot;GBP&quot;, 50000)
-        borrower.verifyBalance(&quot;Pound Sterling&quot;, &quot;GBP&quot;, 50000)
-    }
-}
+        <span class="c1">// Lender balance deducted. Borrower balance credited</span>
+        <span class="n">lender</span><span class="p">.</span><span class="na">verifyBalance</span><span class="p">(</span><span class="s">&quot;Pound Sterling&quot;</span><span class="p">,</span> <span class="s">&quot;GBP&quot;</span><span class="p">,</span> <span class="m">50000</span><span class="p">)</span>
+        <span class="n">borrower</span><span class="p">.</span><span class="na">verifyBalance</span><span class="p">(</span><span class="s">&quot;Pound Sterling&quot;</span><span class="p">,</span> <span class="s">&quot;GBP&quot;</span><span class="p">,</span> <span class="m">50000</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 Where assertions can be done by querying the vault, the graph, or both using <code>NodeHandle</code> extension functions.
-<div class="highlight"><pre><span></span><code>fun NodeHandle.verifyIOU(name: String, isoCode: String, value: Int) {
-    rpc.startFlowDynamic(PostGraphQLFlow::class.java,
-        &quot;&quot;&quot;
-          query {
-            queryBalance(filter: {
-                value : { eq : &quot;$value&quot; }
-            }) {
-             currency(filter: 
-                {
-                    isoCode: { eq: &quot;$isoCode&quot; },
-                and : {
-                    name: { eq: &quot;$name&quot; }
-                }
-              }
-            ){
-              id
-            }
-            id
-          }
-        }
-        &quot;&quot;&quot;.trimIndent(),
-        GraphQLRequestType.QUERY
-    ).returnValue.getOrThrow().also {
-        assertNotNull(it, &quot;Currency $isoCode not present in graph&quot;)
-    }
-}
+<div class="highlight"><pre><span></span><code><span class="kd">fun</span> <span class="n">NodeHandle</span><span class="p">.</span><span class="nf">verifyIOU</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">isoCode</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">rpc</span><span class="p">.</span><span class="na">startFlowDynamic</span><span class="p">(</span><span class="n">PostGraphQLFlow</span><span class="o">::</span><span class="n">class</span><span class="p">.</span><span class="na">java</span><span class="p">,</span>
+        <span class="s">&quot;&quot;&quot;</span>
+<span class="s">          query {</span>
+<span class="s">            queryBalance(filter: {</span>
+<span class="s">                value : { eq : &quot;</span><span class="si">$</span><span class="n">value</span><span class="s">&quot; }</span>
+<span class="s">            }) {</span>
+<span class="s">             currency(filter: </span>
+<span class="s">                {</span>
+<span class="s">                    isoCode: { eq: &quot;</span><span class="si">$</span><span class="n">isoCode</span><span class="s">&quot; },</span>
+<span class="s">                and : {</span>
+<span class="s">                    name: { eq: &quot;</span><span class="si">$</span><span class="n">name</span><span class="s">&quot; }</span>
+<span class="s">                }</span>
+<span class="s">              }</span>
+<span class="s">            ){</span>
+<span class="s">              id</span>
+<span class="s">            }</span>
+<span class="s">            id</span>
+<span class="s">          }</span>
+<span class="s">        }</span>
+<span class="s">        &quot;&quot;&quot;</span><span class="p">.</span><span class="na">trimIndent</span><span class="p">(),</span>
+        <span class="n">GraphQLRequestType</span><span class="p">.</span><span class="na">QUERY</span>
+    <span class="p">).</span><span class="na">returnValue</span><span class="p">.</span><span class="na">getOrThrow</span><span class="p">().</span><span class="na">also</span> <span class="p">{</span>
+        <span class="n">assertNotNull</span><span class="p">(</span><span class="nb">it</span><span class="p">,</span> <span class="s">&quot;IOU not present in graph&quot;</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 `</p>
                 

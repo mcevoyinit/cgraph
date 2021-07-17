@@ -236,16 +236,70 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#do-i-need-this" class="md-nav__link">
-    Do I need this?
+  <a href="#modules" class="md-nav__link">
+    Modules
   </a>
+  
+    <nav class="md-nav" aria-label="Modules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cgraph-core" class="md-nav__link">
+    cgraph-core
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cgraph-example" class="md-nav__link">
+    cgraph-example
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cgraph-js" class="md-nav__link">
+    cgraph-js
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution-arch" class="md-nav__link">
+    Solution Arch
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#quick-start" class="md-nav__link">
-    Quick start
+  <a href="#set-up-your-graph" class="md-nav__link">
+    Set up your graph
   </a>
+  
+    <nav class="md-nav" aria-label="Set up your graph">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#remote" class="md-nav__link">
+    Remote
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#locally" class="md-nav__link">
+    Locally
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -479,7 +533,7 @@
   
     <li class="md-nav__item">
       <a href="future/" class="md-nav__link">
-        Future work
+        Future
       </a>
     </li>
   
@@ -526,16 +580,70 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#do-i-need-this" class="md-nav__link">
-    Do I need this?
+  <a href="#modules" class="md-nav__link">
+    Modules
   </a>
+  
+    <nav class="md-nav" aria-label="Modules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cgraph-core" class="md-nav__link">
+    cgraph-core
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cgraph-example" class="md-nav__link">
+    cgraph-example
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cgraph-js" class="md-nav__link">
+    cgraph-js
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution-arch" class="md-nav__link">
+    Solution Arch
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#quick-start" class="md-nav__link">
-    Quick start
+  <a href="#set-up-your-graph" class="md-nav__link">
+    Set up your graph
   </a>
+  
+    <nav class="md-nav" aria-label="Set up your graph">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#remote" class="md-nav__link">
+    Remote
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#locally" class="md-nav__link">
+    Locally
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -556,25 +664,122 @@
                   </a>
                 
                 
-                <p><img alt="alt text" height="300px" src="resources/images/cgraph.png" width="300px" /></p>
+                <p><img alt="alt text" src="docs/resources/images/cgraph.png" /></p>
 <h1 id="cgraph-corda-the-graph">CGraph - Corda &amp; The Graph<a class="headerlink" href="#cgraph-corda-the-graph" title="Permanent link">&para;</a></h1>
-<p>CGraph is a simple connector library that allows you to pipe verified data from Corda into a GraphQL server and database, over HTTP. </p>
+<p>CGraph is a soon-to-be released library that allows you to pipe verified data from Corda into a GraphQL server and database, over HTTP. </p>
 <p>This means you can transact across trust boundaries, with Corda for safe, secure and provable data but also,
  read via GraphQL for federation, flexibility, and more.</p>
-<h2 id="do-i-need-this">Do I need this?<a class="headerlink" href="#do-i-need-this" title="Permanent link">&para;</a></h2>
+<h3 id="modules">Modules<a class="headerlink" href="#modules" title="Permanent link">&para;</a></h3>
+<p>3 modules within the library currently</p>
+<h4 id="cgraph-core"><code>cgraph-core</code><a class="headerlink" href="#cgraph-core" title="Permanent link">&para;</a></h4>
+<p>The core lib. Inside this cordapp middleware, there are various classes and services which aim to do as much work as possible for the CGraph user cordapp. It contains:</p>
+<p>-<code>GraphableState</code> which extends <code>LinearState</code> and <code>QueryableState</code>. User states must extend this and implement the <code>buildEntityMap()</code> function.
+ This function returns a property map which cgraph will use to generate mutations for the graph.
+  Not all state properties need to be in here except the ones that are needed to be coherent with the state’s corresponding schema entity. 
+  This is the translation point for the Corda LDM and the Graph LDM. 
+  <code>GraphableSchema</code> : <code>LinearState</code> is used solely by cgraph under the hood to perform a commit to the graph.
+´´
+    interface GraphableState : LinearState,  QueryableState {
+        /*<em>
+         * @return [MapOfMaps] representation of the implementing contract state.
+         * This map is used by CGraph to generate mutations in order to write persisted states to the graph db instance.
+         * Future enhances may offer more niche annotation support to better track relationships across state model and graph entities.
+         </em>/
+        fun buildEntityMap(): MapOfMaps
+    }</p>
 <ul>
-<li>Does your data model exhibit high levels of connectedness?</li>
-<li>Do you need a unified, flexible API for both reading and writing on and off-ledger data?</li>
-<li>Do you wish to work with the latest graph tooling and methodologies? e.g GraphQL, GraphDBs.</li>
+<li>
+<p><code>CGraphService</code> is the heart of cgraph. This service detects new ledger entries of type <code>GraphableState</code> and transforms them by passing the result of the <code>buildEntityMap()</code> function into the generator.</p>
+</li>
+<li>
+<p><code>GraphQLMutationGenerator</code> generates a mutation based on the shape of the provided state property map. More details to be provided here but it can detect based on the presence of UUID type if a nested mutation is needed to write a separate entity.</p>
+</li>
+<li>
+<p><code>GQLClient</code> is then used to write the mutation over HTTP to the graph.</p>
+</li>
 </ul>
-<h2 id="quick-start">Quick start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
-<p>Include the <code>cgraph-core</code> module as a dependency inside your <code>build.gradle</code></p>
-<div class="highlight"><pre><span></span><code>&lt;dependency&gt;
-  &lt;groupId&gt;com.cgraph&lt;/groupId&gt;
-  &lt;artifactId&gt;cgraph&lt;/artifactId&gt;
-  &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
-&lt;/dependency&gt;
+<h4 id="cgraph-example"><code>cgraph-example</code><a class="headerlink" href="#cgraph-example" title="Permanent link">&para;</a></h4>
+<ul>
+<li>This model takes CGraph beta “out for a spin” declaring it as a dependency.</li>
+<li>It extends the IOU CorDapp and making it “graphable” by using the SDK.</li>
+<li>You should follow this example to get your own CorDapp up and running.</li>
+<li>The Graphable IOU Cordapp Logical Data Model looks like:</li>
+</ul>
+<p><img alt="alt text" src="docs/resources/images/IOUGraph.png" /></p>
+<h4 id="cgraph-js"><code>cgraph-js</code><a class="headerlink" href="#cgraph-js" title="Permanent link">&para;</a></h4>
+<ul>
+<li>This is the client server, it uses  Cordite Braid JS client, among other items like dgraph lamda servers. </li>
+<li>The sample JS lives in here now also but future versions will seek to provide an NPM package to support user clients.</li>
+<li></li>
+</ul>
+<h4 id="solution-arch">Solution Arch<a class="headerlink" href="#solution-arch" title="Permanent link">&para;</a></h4>
+<p>Here's the target cgraph solution architecture V1</p>
+<p><img alt="alt text" src="docs/resources/images/cgraph-arch.png" /></p>
+<ol>
+<li>The NodeJS runtime is the user entry point to the system for most reads and writes. 
+Data to write is received from the user browser/client by a braid.js client and forwarded over HTTP to an embedded braid web server running in the CorDapp.
+ I chose Braid so that its JS client could live inside a DGraph “Lambda” server Dgraph Lambda Overview - GraphQL. 
+My sense is there will be interesting synergy between Lambdas and Corda JS clients. 
+Lambda provides a way to write your custom logic in JavaScript, integrate it with your GraphQL schema, and execute it using the GraphQL API in a few easy steps.
+ Looking back to the flipped tiered business programming model earlier in the paper, the lambda server is now layer 3 with DGraph and Corda being layer 2. This means</li>
+</ol>
+<p>A single API endpoint for the whole Corda solution</p>
+<p>A selling point of GraphQL is being able to have all the API access at a single URL. That’s right, not different ports or even endpoints, but the same exact endpoint for both queries and mutations (read and writes), for everything. The GraphQL syntax defines for each HTTP request whether it is a query (default if not specified) or a mutation. It would be similar in theory to having a single SQL endpoint connection to run either SELECT statements and INSERT/UPDATE/DELETE statements.
+So by being able to have a custom mutation/query you can do multiple actions in a single request to a single API. For example, we could set up a lambda to write to Corda and write an expected txn ID in DGraph, all in a single mutation operation, this could be useful for reconciliation and logging. There is still way more to it than this.</p>
+<p>Corda flows are invoked, transactions write data to the ledger in a way that is protected by contracts, as normal. After the fact, once the data is successfully recorded, it is replicated into DGraph over HTTP via the CGraphService. This service currently subscribes to rawUpdates to detect GraphableStates. It then uses the CGraphMutationGenerator to generate the corresponding GraphQL mutation which is sent over  HTTP by the GQLClient. Multi-state transactions resolve coherently in the graph when the correct paradigm is followed, something I’ll expand on later. A two-phase commit can be used here to increase consistency, which is the main reason GraphableState would extend QueryableState.</p>
+<p>Data enters DGraph. The same NodeJS runtime from 1. can then fetch data via GraphQL and serve data in UIs out to the browser via React. </p>
+<p>Alternatively, raw data can be queried from DGraph via GraphQL or HTTP consoles/clients. My favourite tool for this is GraphiQL Online  </p>
+<h2 id="set-up-your-graph">Set up your graph<a class="headerlink" href="#set-up-your-graph" title="Permanent link">&para;</a></h2>
+<p>You need to specify the GraphQL server that CGraph will connect to. 
+I chose DGraph as a first integration since the GraphQL server and KV store are in one process. However any GraphQL server should work. 
+You can set up DGraph locally or remote, for each node.</p>
+<h3 id="remote">Remote<a class="headerlink" href="#remote" title="Permanent link">&para;</a></h3>
+<p>DGraph has a free, one click deployable, instance that's super easy to get set-up <code>https://cloud.dgraph.io/</code>. I use two premium instances for the demo and test. I'll add a version that works with a single instance for development convenience in future.</p>
+<h3 id="locally">Locally<a class="headerlink" href="#locally" title="Permanent link">&para;</a></h3>
+<p><code>Golang binaries</code> set up golang and fetch them at https://dgraph.io/downloads</p>
+<p><code>$GOPATH/bin/dgraph zero
+$GOPATH/bin/dgraph alpha --port_offset 1
+<div class="highlight"><pre><span></span><code>#### Docker
+
+```docker run --rm -it -p &quot;8080:8080&quot; -p &quot;9080:9080&quot; -p &quot;8000:8000&quot; -v ~/dgraph:/dgraph &quot;dgraph/standalone:v21.03.0&quot;```
+
+
+Edit the URL and Auth Token in `deployCGraph` gradle task in root `build.gradle`
+You can also edit the testing config in `CGraphIOUDriverTesting` to run the sample driverdsl test.
+This is the URL Corda will write to and, the URL the client will read from. 
+
+### Running CGraph
+Hit a terminal in the project root directory:
 </code></pre></div>
+./gradlew clean deployCGraph
+./build/nodes/runnodes
+<div class="highlight"><pre><span></span><code>This brings up 3 nodes (Lender, Borrower and a Notary)
+
+You then need to connect each Nodejs client to its corresponding node
+</code></pre></div>
+cd cgraph/cgraph-js/
+node.js iou-client.js 3000 8080
+// new terminal tab
+node.js iou-client.js 3001 8081</code></p>
+<p>fjsdfkj  adfsadf</p>
+<ul>
+<li>You can interact with this HTTP API by using the Insomnia HTTP client json script <code>CGraphInsomnia.json</code> in the <code>resources/scripts</code> folder.</li>
+<li>The order in which you seed the data should go like this:<ul>
+<li><code>Member</code> goes directly into each nodes graph, not the ledger</li>
+<li><code>Currency</code> written to ledger and then graph via lib. Hit node.js server over http.</li>
+<li><code>Balance</code> written to ledger. References currency and holder member, from above</li>
+<li><code>IOU</code> written to ledger. References all of above. IOU in both ledgers and graphs. </li>
+</ul>
+</li>
+</ul>
+<p>In future versions, I'd like write a more modular architecture for extending and integrating with more graph types, for example:</p>
+<pre><code>cgraph-cordapp 
+cgraph-client
+cgraph-schema-generator 
+cgraph-testing
+cgraph-sample-client
+cgraph-sample-cordapp
+</code></pre>
                 
               
               
