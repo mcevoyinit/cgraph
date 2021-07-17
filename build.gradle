@@ -4,10 +4,10 @@ buildscript {
         kotlin_version = "1.2.71"
 
         corda_group = "net.corda"
-        corda_release_version = "4.8" //"4.6.1"
+        corda_release_version = "4.8"
 
         corda_gradle_plugin_group = "net.corda.plugins"
-        corda_gradle_plugin_version = "5.0.12" //"4.0.44"
+        corda_gradle_plugin_version = "5.0.12"
 
         junit_group = "org.junit.jupiter"
         junit_version = "5.3.1"
@@ -31,9 +31,7 @@ buildscript {
         mavenLocal()
         mavenCentral()
         jcenter()
-        maven {
-            url 'https://repo1.maven.org/maven2'
-        }
+        maven { url 'https://repo1.maven.org/maven2' }
         maven { url "https://jitpack.io" }
         maven { url 'https://ci-artifactory.corda.r3cev.com/artifactory/corda-releases' }
     }
@@ -46,25 +44,29 @@ buildscript {
     }
 }
 
+plugins {
+    id "com.jfrog.artifactory" version "4.7.5"
+    id "maven-publish"
+}
+
 repositories {
     mavenLocal()
     mavenCentral()
     jcenter()
+    maven { url 'https://repo1.maven.org/maven2'}
     maven { url 'https://jitpack.io' }
     maven { url 'https://ci-artifactory.corda.r3cev.com/artifactory/corda' }
     maven { url 'https://repo.gradle.org/gradle/libs-releases' }
     maven { url "https://ci-artifactory.corda.r3cev.com/artifactory/corda" }
     maven { url "https://ci-artifactory.corda.r3cev.com/artifactory/corda-releases" }
-    maven { url "https://ci-artifactory.corda.r3cev.com/artifactory/corda-lib" }
-    maven { url "https://ci-artifactory.corda.r3cev.com/artifactory/corda-lib-dev" }
     maven { url "https://jitpack.io" }
-    maven { url "https://ci-artifactory.corda.r3cev.com/artifactory/corda-solutions-releases" }
 }
 
 apply plugin: 'kotlin'
 apply plugin: 'net.corda.plugins.cordapp'
 apply plugin: 'net.corda.plugins.cordformation'
 apply plugin: 'net.corda.plugins.quasar-utils'
+apply plugin: 'maven-publish'
 
 dependencies {
     // Kotlin Dependencies
@@ -75,6 +77,8 @@ dependencies {
 
     // CorDapp Dependencies
     cordapp project(":cgraph-core:")
+    //cordapp "com.cgraph.core.cgraph:cgraph-core:1.0-SNAPSHOT"
+
     cordapp project(":cgraph-example:")
 
     implementation group: 'javax.validation', name: 'validation-api', version: '1.0.0.GA'
@@ -96,7 +100,7 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
     }
 }
 
-task deployCGraph(type: net.corda.plugins.Cordform, dependsOn: ['jar']) {
+task deployNodes(type: net.corda.plugins.Cordform, dependsOn: ['jar']) {
     directory "./build/nodes"
     nodeDefaults {
         projectCordapp {
@@ -117,16 +121,16 @@ task deployCGraph(type: net.corda.plugins.Cordform, dependsOn: ['jar']) {
 
     node {
         name "O=Lender,L=London,C=GB"
-        cordapp(project("cgraph-example")) {
-            config '''
-                braidServerPort=9090
-             '''
-        }
         cordapp(project(':cgraph-core')) {
             config '''
                 graphQLUrl="https://dawn-sky.eu-west-1.aws.cloud.dgraph.io"
                 graphQLToken="YjNkN2EwMThjMzhjMDMzM2I1MDFmNWM3ZDE2YTI5YWM="
                 graphBraidServerPort=8080
+             '''
+        }
+        cordapp(project("cgraph-example")) {
+            config '''
+                braidServerPort=9090
              '''
         }
         p2pPort 10004
@@ -139,16 +143,16 @@ task deployCGraph(type: net.corda.plugins.Cordform, dependsOn: ['jar']) {
     }
     node {
         name "O=Borrower,L=Berlin,C=DE"
-        cordapp(project("cgraph-example")) {
-            config '''
-                braidServerPort=9091
-             '''
-        }
         cordapp(project(':cgraph-core')) {
             config '''
                 graphQLUrl="https://proud-wave.eu-central-1.aws.cloud.dgraph.io"
                 graphQLToken="MTgxOTkyZDcyMjcwYjg1OTE5MGRiNDQwOTUxYjgwMDc="
                 graphBraidServerPort=8081
+             '''
+        }
+        cordapp(project("cgraph-example")) {
+            config '''
+                braidServerPort=9091
              '''
         }
         p2pPort 10008
@@ -160,3 +164,44 @@ task deployCGraph(type: net.corda.plugins.Cordform, dependsOn: ['jar']) {
         sshdPort 2223
     }
 }
+
+allprojects {
+    version "1.0-SNAPSHOT"
+    group "com.cgraph.core"
+
+    configurations.all {
+        resolutionStrategy {
+            // Force dependencies to use the same version of Kotlin
+            force "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+            force "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+            force "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+            force "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+            force "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+        }
+    }
+}
+
+subprojects {
+    buildscript {
+        repositories {
+            jcenter()
+            mavenCentral()
+        }
+    }
+
+    repositories {
+        mavenLocal()
+        jcenter()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+        maven { url "http://ci-artifactory.corda.r3cev.com/artifactory/corda-dev" }
+    }
+    apply plugin: "maven-publish"
+}
+
+wrapper {
+    gradleVersion = "4.10.2"
+    distributionType = Wrapper.DistributionType.ALL
+}
+
+

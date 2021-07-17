@@ -2,7 +2,9 @@ package com.cgraph.core.states
 
 import com.cgraph.core.support.MapOfMaps
 import net.corda.core.contracts.LinearState
+import net.corda.core.serialization.CordaSerializable
 
+@CordaSerializable
 interface GraphableState : LinearState {
     /**
      * @return [MapOfMaps] representation of the implementing contract state.

@@ -1,3 +1,11 @@
+plugins {
+    id "java-library"
+    id "maven-publish"
+}
+
+group 'com.cgraph.core'
+version '1.0-SNAPSHOT'
+
 repositories {
     maven {
         url 'https://repo1.maven.org/maven2'
@@ -14,6 +22,10 @@ repositories {
     maven { url "https://ci-artifactory.corda.r3cev.com/artifactory/corda-lib" }
     maven { url "https://ci-artifactory.corda.r3cev.com/artifactory/corda-lib-dev" }
     maven { url "https://jitpack.io" }
+}
+
+repositories {
+    mavenCentral()
 }
 
 apply plugin: 'kotlin'
@@ -109,11 +121,6 @@ jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
-test {
-    jvmArgs = ["-ea", "-javaagent:../lib/quasar.jar"]
-    useJUnitPlatform()
-}
-
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
     kotlinOptions {
         freeCompilerArgs = ["-Xnormalize-constructor-calls=enable"]
@@ -127,4 +134,23 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
 task integrationTest(type: Test, dependsOn: []) {
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
+}
+
+// Configures the publishing
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/mcevoyinit/cgraph")
+            credentials {
+                username = System.getenv("GITHUB_USERNAME")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
+        }
+    }
 }

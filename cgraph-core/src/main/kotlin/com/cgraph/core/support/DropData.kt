@@ -1,7 +1,5 @@
 package com.cgraph.core.support
 
-import com.cgraph.core.services.DGraphInstanceMethod
-import com.cgraph.core.services.DGraphServiceFactory
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request

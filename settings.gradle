@@ -2,4 +2,3 @@ rootProject.name = 'cgraph'
 include 'cgraph-core'
 include 'cgraph-example'
 
-

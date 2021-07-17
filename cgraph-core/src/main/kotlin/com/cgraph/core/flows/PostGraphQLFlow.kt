@@ -1,10 +1,12 @@
 package com.cgraph.core.flows
 
 import co.paralleluniverse.fibers.Suspendable
+import com.cgraph.core.services.GraphQLRequestType
 import com.cgraph.core.support.graphService
 import com.cgraph.core.support.uuid
 import net.corda.core.flows.FlowLogic
 import net.corda.core.flows.InitiatingFlow
+import net.corda.core.flows.StartableByRPC
 import net.corda.core.flows.StartableByService
 import net.corda.core.utilities.ProgressTracker
 import java.util.*
@@ -14,13 +16,13 @@ import java.util.*
  */
 @InitiatingFlow
 @StartableByService
-class PostGraphQLFlow(val graphQL: String) : FlowLogic<UUID?>() {
+@StartableByRPC
+class PostGraphQLFlow(val graphQL: String, val graphQLRequestType: GraphQLRequestType) : FlowLogic<UUID?>() {
     override val progressTracker = ProgressTracker()
 
     @Suspendable
     override fun call() : UUID? {
         val graphService = serviceHub.graphService()
-        val response = graphService.performGraphQLRequest(graphQL)?.uuid()
-        return response
+        return graphService.performGraphQLRequest(graphQL, graphQLRequestType)?.uuid()
     }
 }

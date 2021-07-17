@@ -2,7 +2,6 @@ package com.cgraph.example.states
 
 import net.corda.core.contracts.CommandData
 import net.corda.core.contracts.Contract
-import net.corda.core.contracts.requireSingleCommand
 import net.corda.core.contracts.requireThat
 import net.corda.core.transactions.LedgerTransaction
 
@@ -37,8 +36,6 @@ class IOUContract : Contract {
             "The lender and the borrower cannot be the same entity." using (iou.lender != iou.borrower)
             // IOU-specific constraints.
             "The IOU's value must be non-negative." using (iou.value > 0)
-
-            //Balances TODO
 
         }
     }

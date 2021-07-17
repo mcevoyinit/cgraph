@@ -18,6 +18,7 @@ import java.util.*
 
 @InitiatingFlow
 @StartableByService
+@StartableByRPC
 class IssueBalanceFlow(val currencyIsoCode: String, val value: Int) : FlowLogic<SignedTransaction>() {
 
     companion object {
@@ -43,12 +44,11 @@ class IssueBalanceFlow(val currencyIsoCode: String, val value: Int) : FlowLogic<
         )
         val txCommand = Command(BalanceContract.Commands.Create(), balanceState.participants.map { it.owningKey })
         val txBuilder = TransactionBuilder(notary)
-            .addOutputState(balanceState, BalanceContract.ID)
+            .addOutputState(balanceState)
             .addCommand(txCommand)
 
         // Verify that the transaction is valid.
         txBuilder.verify(serviceHub)
-
         // Sign the transaction.
         val partSignedTx = serviceHub.signInitialTransaction(txBuilder)
         // Notarise and record the transaction in both parties' vaults.
