@@ -29,7 +29,7 @@ Relationships between entities are marked explicitly as types in the schema.
 
 Annotations like `@hasInverse(field “field_on_related_entity”)` allow you to mark relationships. There are many more annotations possible, which I’ll expand on soon. 
 
-```
+```graphql
 type IOU {
   id: String! @id
   value: String!
@@ -61,7 +61,7 @@ type Currency {
 ```
 ## State - Entity Mapping
 
-```
+```kotlin
 @BelongsToContract(IOUContract::class)
 data class IOUState(val value: Int,
                     val currency: UUID,
@@ -100,7 +100,7 @@ The example CorDapp contains a `IOUBraidServer`. Future enhancements may create 
 
 E2E Integration test can be found at `CGraphIOUDriverTesting`
 
-```
+```kotlin
 @Test
 fun `graph enabled advanced iou cordapp e2e processing`() {
     driver(DriverParameters(
@@ -224,7 +224,7 @@ fun `graph enabled advanced iou cordapp e2e processing`() {
 }
 ```
 Where assertions can be done by querying the vault, the graph, or both using `NodeHandle` extension functions.
-```
+```kotlin
 fun NodeHandle.verifyIOU(name: String, isoCode: String, value: Int) {
     rpc.startFlowDynamic(PostGraphQLFlow::class.java,
         """
@@ -248,7 +248,7 @@ fun NodeHandle.verifyIOU(name: String, isoCode: String, value: Int) {
         """.trimIndent(),
         GraphQLRequestType.QUERY
     ).returnValue.getOrThrow().also {
-        assertNotNull(it, "Currency $isoCode not present in graph")
+        assertNotNull(it, "IOU not present in graph")
     }
 }
 ```

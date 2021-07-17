@@ -1,7 +1,6 @@
 package com.cgraph.core.server
 
 import io.cordite.braid.corda.BraidCordaContext
-import io.cordite.braid.core.config.BraidConfig
 import net.corda.core.node.AppServiceHub
 import net.corda.core.node.services.CordaService
 import net.corda.core.serialization.SingletonSerializeAsToken
@@ -15,7 +14,7 @@ class CGraphBraidServer(private val serviceHub: AppServiceHub) : SingletonSerial
     private val port = serviceHub.getAppContext().config.get("graphBraidServerPort") as Int
 
     init {
-        BraidConfig.fromResource(braidContext, configFileName)
+       // BraidConfig.fromResource(braidContext, configFileName)
     }
 
     // config file name based on the node legal identity

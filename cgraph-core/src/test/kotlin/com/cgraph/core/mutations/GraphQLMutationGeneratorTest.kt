@@ -54,7 +54,8 @@ class GraphQLMutationGeneratorTest {
             linearId = UniqueIdentifier(id = UUID.randomUUID())
         )
         val mutation = GraphQLMutationGenerator().processStates(
-            graphableState.buildEntityMap()
+            graphableState.buildEntityMap(),
+            TransactionType.ISSUANCE
         )
         print("Mutation: $mutation")
     }
@@ -68,7 +69,8 @@ class GraphQLMutationGeneratorTest {
             linearId = UniqueIdentifier(id = UUID.randomUUID())
         )
         val mutation = GraphQLMutationGenerator().processStates(
-            graphableState.buildEntityMap()
+            graphableState.buildEntityMap(),
+            TransactionType.ISSUANCE
         )
         print("Mutation: $mutation")
     }

@@ -12,7 +12,6 @@ import com.cgraph.example.states.BalanceState
 import com.cgraph.example.states.IOUContract
 import com.cgraph.example.states.IOUState
 import net.corda.core.contracts.Command
-import net.corda.core.contracts.StateAndRef
 import net.corda.core.contracts.UniqueIdentifier
 import net.corda.core.contracts.requireThat
 import net.corda.core.flows.*
@@ -23,7 +22,6 @@ import net.corda.core.node.services.vault.QueryCriteria
 import net.corda.core.transactions.SignedTransaction
 import net.corda.core.transactions.TransactionBuilder
 import net.corda.core.utilities.ProgressTracker
-import net.corda.core.utilities.unwrap
 import java.util.*
 
 /**
@@ -116,11 +114,11 @@ class IssueIOUFlow(val iouValue: Int,
         val partSignedTx = serviceHub.signInitialTransaction(txBuilder)
 
         // Send the state to the counterparty, and receive it back with their signature.
-        //
-        //val fullySignedTx = subFlow(CollectSignaturesFlow(partSignedTx, setOf(borrowerFlowSession)))
+        val borrowerFlowSession = initiateFlow(borrower)
+        val fullySignedTx = subFlow(CollectSignaturesFlow(partSignedTx, setOf(borrowerFlowSession)))
 
         // Notarise and record the transaction in both parties' vaults.
-        return subFlow(FinalityFlow(partSignedTx, emptyList())) //setOf(borrowerFlowSession)))
+        return subFlow(FinalityFlow(fullySignedTx, listOf(borrowerFlowSession)))
     }
 }
 
@@ -142,14 +140,14 @@ class Acceptor(val borrowerSession: FlowSession) : FlowLogic<SignedTransaction>(
 
             val borrowerBalanceState = serviceHub.vaultService.queryBy<BalanceState>(queryCriteria).states.singleOrNull() ?: error("Balance state not present for $currencyId")
 
-            subFlow(SendStateAndRefFlow(borrowerSession, listOf(borrowerBalanceState)))
+            subFlow(SendStateAndRefFlow(borrowerSession, listOf(borrowerBalanceState)))*/
 
             val signTransactionFlow = object : SignTransactionFlow(borrowerSession) {
                 override fun checkTransaction(stx: SignedTransaction) = requireThat {
                     "This must be an IOU transaction." using (true)
                 }
             }
-            val txId = subFlow(signTransactionFlow).id*/
+            val txId = subFlow(signTransactionFlow).id
 
             return subFlow(ReceiveFinalityFlow(borrowerSession))//, expectedTxId = txId))
         }

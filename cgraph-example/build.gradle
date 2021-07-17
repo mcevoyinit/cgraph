@@ -9,10 +9,9 @@ repositories {
     maven { url 'https://ci-artifactory.corda.r3cev.com/artifactory/corda' }
     maven { url 'https://repo.gradle.org/gradle/libs-releases' }
     maven { url "https://ci-artifactory.corda.r3cev.com/artifactory/corda-lib" }
+    maven { url "https://ci-artifactory.corda.r3cev.com/artifactory/corda-lib-dev" }
     maven { url "https://ci-artifactory.corda.r3cev.com/artifactory/corda" }
     maven { url "https://ci-artifactory.corda.r3cev.com/artifactory/corda-releases" }
-    maven { url "https://ci-artifactory.corda.r3cev.com/artifactory/corda-lib" }
-    maven { url "https://ci-artifactory.corda.r3cev.com/artifactory/corda-lib-dev" }
     maven { url "https://jitpack.io" }
 }
 
@@ -103,16 +102,12 @@ dependencies {
 
     //CGraph Core
     cordapp project(":cgraph-core:")
+    //cordapp "com.cgraph.core.cgraph:cgraph-core:1.0-SNAPSHOT"
 }
 
 jar {
     exclude '**/log4j2*.xml'
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
-
-test {
-    jvmArgs = ["-ea", "-javaagent:../lib/quasar.jar"]
-    useJUnitPlatform()
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {

@@ -1,19 +1,13 @@
 package com.cgraph.example.braid
 
-import com.cgraph.core.services.GraphQLRequestType
-import io.cordite.braid.core.annotation.BraidMethod
 import io.cordite.braid.core.annotation.BraidService
-import io.cordite.braid.core.constants.BraidConstants.BRAID_AUTHORIZATION_SCHEME_NAME
 import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import net.corda.core.concurrent.CordaFuture
-import net.corda.core.contracts.StateAndRef
-import net.corda.core.node.services.Vault
-import net.corda.core.node.services.vault.DEFAULT_PAGE_SIZE
 import net.corda.core.transactions.SignedTransaction
-import rx.Observable
 import java.util.*
-import javax.ws.rs.*
+import javax.ws.rs.POST
+import javax.ws.rs.Path
+import javax.ws.rs.QueryParam
 
 @BraidService(
     name = "iouService",

@@ -5,15 +5,14 @@ import com.cgraph.core.flows.PostGraphQLFlow
 import com.cgraph.core.services.GraphQLRequestType
 import com.cgraph.core.support.CGraph
 import com.cgraph.core.support.graphableString
-import com.cgraph.example.data.QUERY_CURRENCY_BY_ISO
 import com.cgraph.example.data.UPSERT_MEMBER_GQL
 import com.cgraph.example.flows.IssueBalanceFlow
 import com.cgraph.example.flows.IssueCurrencyFlow
 import com.cgraph.example.flows.IssueIOUFlow
-import com.cgraph.example.flows.UpdateBalanceFlow
-import com.cgraph.example.states.BalanceState
+import com.cgraph.example.states.IOUState
 import com.cgraph.example.support.verifyBalance
 import com.cgraph.example.support.verifyCurrency
+import com.cgraph.example.support.verifyIOU
 import net.corda.core.identity.CordaX500Name
 import net.corda.core.utilities.getOrThrow
 import net.corda.node.services.Permissions
@@ -97,11 +96,11 @@ class CGraphIOUDriverTesting {
 
             val borrowerParty = borrower.nodeInfo.legalIdentities.first()
 
-            println("Dropping data from graphs databases")
+            println("Dropping data from graphs databases\n\n")
             borrower.rpc.startFlowDynamic(DropGraphDataFlow::class.java)
             lender.rpc.startFlowDynamic(DropGraphDataFlow::class.java)
 
-            println("Writing Members to Graph")
+            println("Writing Members to Graph\n\n")
             lender.rpc.startFlowDynamic(
                 PostGraphQLFlow::class.java,
                 UPSERT_MEMBER_GQL(
@@ -137,41 +136,40 @@ class CGraphIOUDriverTesting {
                 GraphQLRequestType.MUTATION
             )
 
-            println("Writing Currency to Ledger and Graph of both parties")
+            println("Writing Currency to Ledger and Graph of both parties\n\n")
             lender.rpc.startFlowDynamic(IssueCurrencyFlow::class.java,"Pound Sterling", "GBP", listOf(borrowerParty)).returnValue.getOrThrow()
 
-            print("Wait for entry to reach both lender and borrower graphs")
+            print("Wait for entry to reach both lender and borrower graphs\n\n")
             Thread.sleep(1000)
 
             lender.verifyCurrency("GBP")
             borrower.verifyCurrency("GBP")
 
-            print("Issue balance into both ledgers and thus graphs")
+            print("Issue balance into both ledgers and thus graphs\n\n")
             val lenderBalanceTxn = lender.rpc.startFlowDynamic(IssueBalanceFlow::class.java,"GBP", 100000).returnValue.getOrThrow()
             val borrowerBalanceTxn = borrower.rpc.startFlowDynamic(IssueBalanceFlow::class.java,"GBP", 0).returnValue.getOrThrow()
 
             lender.verifyBalance("Pound Sterling", "GBP", 100000)
             borrower.verifyBalance("Pound Sterling", "GBP", 0)
 
-            print("Wait for balance entry to reach both lender and borrower graphs")
+            print("Wait for balance entry to reach both lender and borrower graphs\n\n")
             Thread.sleep(1000)
 
-            print("Writing IOU to both ledgers and graphs, with updated balances in both also")
-            lender.rpc.startFlowDynamic(IssueIOUFlow::class.java, 50000, "Pound Sterling", borrowerParty).returnValue.getOrThrow()
+            print("Writing IOU to both ledgers and graphs, with updated balances in both also \n\n")
+            val iou = lender.rpc.startFlowDynamic(IssueIOUFlow::class.java, 50000, "Pound Sterling", borrowerParty)
+                .returnValue
+                .getOrThrow()
+                .coreTransaction
+                .outputStates
+                .single() as IOUState
 
-            val lenderBalanceId = (lenderBalanceTxn.coreTransaction.outputStates.single() as BalanceState).linearId.id
-            lender.rpc.startFlowDynamic(UpdateBalanceFlow::class.java, -5000, lenderBalanceId)
-
-            val borrowerBalanceId = (lenderBalanceTxn.coreTransaction.outputStates.single() as BalanceState).linearId.id
-            lender.rpc.startFlowDynamic(UpdateBalanceFlow::class.java, 5000, borrowerBalanceId)
-
-            // Lender balance deducted. Borrower balance credited
-            lender.verifyBalance("Pound Sterling", "GBP", 50000)
-            borrower.verifyBalance("Pound Sterling", "GBP", 50000)
+            // Verify IOU
+            lender.verifyIOU(iou.linearId.id.toString(),"GBP", 100000,"Pound Sterling")
+            borrower.verifyIOU(iou.linearId.id.toString(),"GBP", 100000,"Pound Sterling")
         }
     }
 
-    @Test
+   /* @Test
     fun `currency persisted to corda and and then to the graph`() {
         driver(DriverParameters(
                 startNodesInProcess = true,
@@ -197,7 +195,7 @@ class CGraphIOUDriverTesting {
                 QUERY_CURRENCY_BY_ISO("CG"))
                 .returnValue.getOrThrow()
         }
-    }
+    }*/
 }
 
 

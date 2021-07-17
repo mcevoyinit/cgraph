@@ -121,11 +121,6 @@ jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
-test {
-    jvmArgs = ["-ea", "-javaagent:../lib/quasar.jar"]
-    useJUnitPlatform()
-}
-
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
     kotlinOptions {
         freeCompilerArgs = ["-Xnormalize-constructor-calls=enable"]
@@ -148,24 +143,14 @@ publishing {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/mcevoyinit/cgraph")
             credentials {
-                username = "mcevoyinit"//System.getenv("GITHUB_USERNAME")
-                password = "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"//System.getenv("GITHUB_TOKEN")
+                username = System.getenv("GITHUB_USERNAME")
+                password = System.getenv("GITHUB_TOKEN")
             }
         }
     }
     publications {
         gpr(MavenPublication) {
             from(components.java)
-            // Behebt den Fehler mit den dynamischen Versionen von Spring Boot
-            // Fixes the error with dynamic versions when using Spring Boot
-            /*versionMapping {
-                usage('java-api') {
-                    fromResolutionOf('runtimeClasspath')
-                }
-                usage('java-runtime') {
-                    fromResolutionResult()
-                }
-            }*/
         }
     }
 }

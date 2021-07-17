@@ -4,10 +4,10 @@ buildscript {
         kotlin_version = "1.2.71"
 
         corda_group = "net.corda"
-        corda_release_version = "4.8" //"4.6.1"
+        corda_release_version = "4.8"
 
         corda_gradle_plugin_group = "net.corda.plugins"
-        corda_gradle_plugin_version = "5.0.12" //"4.0.44"
+        corda_gradle_plugin_version = "5.0.12"
 
         junit_group = "org.junit.jupiter"
         junit_version = "5.3.1"
@@ -31,9 +31,7 @@ buildscript {
         mavenLocal()
         mavenCentral()
         jcenter()
-        maven {
-            url 'https://repo1.maven.org/maven2'
-        }
+        maven { url 'https://repo1.maven.org/maven2' }
         maven { url "https://jitpack.io" }
         maven { url 'https://ci-artifactory.corda.r3cev.com/artifactory/corda-releases' }
     }
@@ -55,15 +53,13 @@ repositories {
     mavenLocal()
     mavenCentral()
     jcenter()
+    maven { url 'https://repo1.maven.org/maven2'}
     maven { url 'https://jitpack.io' }
     maven { url 'https://ci-artifactory.corda.r3cev.com/artifactory/corda' }
     maven { url 'https://repo.gradle.org/gradle/libs-releases' }
     maven { url "https://ci-artifactory.corda.r3cev.com/artifactory/corda" }
     maven { url "https://ci-artifactory.corda.r3cev.com/artifactory/corda-releases" }
-    maven { url "https://ci-artifactory.corda.r3cev.com/artifactory/corda-lib" }
-    maven { url "https://ci-artifactory.corda.r3cev.com/artifactory/corda-lib-dev" }
     maven { url "https://jitpack.io" }
-    maven { url "https://ci-artifactory.corda.r3cev.com/artifactory/corda-solutions-releases" }
 }
 
 apply plugin: 'kotlin'
@@ -81,7 +77,7 @@ dependencies {
 
     // CorDapp Dependencies
     cordapp project(":cgraph-core:")
-    cordapp "com.github.mcevoyinit.cgraph:cgraph-core:1.0-SNAPSHOT"
+    //cordapp "com.cgraph.core.cgraph:cgraph-core:1.0-SNAPSHOT"
 
     cordapp project(":cgraph-example:")
 
@@ -199,15 +195,7 @@ subprojects {
         mavenCentral()
         maven { url 'https://jitpack.io' }
         maven { url "http://ci-artifactory.corda.r3cev.com/artifactory/corda-dev" }
-        maven { url "http://ci-artifactory.corda.r3cev.com/artifactory/corda-releases" }
-        maven { url "https://ci-artifactory.corda.r3cev.com/artifactory/corda-solutions-private-dev/"
-            credentials {
-                username = System.getenv('CORDA_ARTIFACTORY_USERNAME') ?: System.getProperty('corda.artifactory.username')
-                password = System.getenv('CORDA_ARTIFACTORY_PASSWORD') ?: System.getProperty('corda.artifactory.password')
-            }
-        }
     }
-
     apply plugin: "maven-publish"
 }
 

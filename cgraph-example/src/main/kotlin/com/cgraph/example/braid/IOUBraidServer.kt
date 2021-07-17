@@ -1,14 +1,11 @@
 package com.cgraph.example.braid
 
-import com.cgraph.core.services.CGraphService
 import io.cordite.braid.corda.BraidCordaContext
 import io.cordite.braid.core.config.BraidConfig
 import io.cordite.braid.core.http.HttpServerConfig
-import io.cordite.braid.core.server.findAndStartAllBraidServices
 import net.corda.core.node.AppServiceHub
 import net.corda.core.node.services.CordaService
 import net.corda.core.serialization.SingletonSerializeAsToken
-import net.corda.node.services.api.ServiceHubInternal
 
 @CordaService
 class IOUBraidServer(private val serviceHub: AppServiceHub) : SingletonSerializeAsToken() {
@@ -27,7 +24,7 @@ class IOUBraidServer(private val serviceHub: AppServiceHub) : SingletonSerialize
     this
       .withHttpServerConfig(HttpServerConfig(tlsEnabled = false))
       .withPort(port)
-      .findAndStartAllBraidServices(braidContext)
+      .withService(braidContext, IOUServiceCore::class.java)
       .start(braidContext)
   }
 

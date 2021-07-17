@@ -3,7 +3,6 @@ package com.cgraph.example.support
 import com.cgraph.core.flows.PostGraphQLFlow
 import com.cgraph.core.services.CGraphService
 import com.cgraph.core.services.GraphQLRequestType
-import net.corda.core.messaging.startFlow
 import net.corda.core.utilities.getOrThrow
 import net.corda.testing.driver.InProcess
 import net.corda.testing.driver.NodeHandle
@@ -74,18 +73,18 @@ fun NodeHandle.verifyBalance(name: String, isoCode: String, value: Int) {
     }
 }
 
-fun NodeHandle.verifyIOU(name: String, isoCode: String, value: Int) {
+fun NodeHandle.verifyIOU(id: String, isoCode: String, value: Int, currencyName: String) {
     rpc.startFlowDynamic(PostGraphQLFlow::class.java,
         """
           query {
             queryIOU(filter: {
-                value : { eq : "$value" }
+                id : { eq : "$id" }
             }) {
              currency(filter: 
                 {
                     isoCode: { eq: "$isoCode" },
                 and : {
-                    name: { eq: "$name" }
+                    name: { eq: "$currencyName" }
                 }
               }
             ){

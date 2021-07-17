@@ -23,7 +23,7 @@ interface GraphableState : LinearState,  QueryableState {
  This is the heart of CGraph. This service detects new ledger entries of type `GraphableState` and transforms them by passing the result of the `buildEntityMap()` function into the generator.
  Here's a snippet of the core function.
  
-```
+```kotlin
 private fun registerGraphableUpdatesSubscription(serviceHub: ServiceHub): Subscription  {
         logger.debug("Registering CGraph Service ($nodeOrganisation) for Vault Raw Updates.")
         return serviceHub.vaultService.rawUpdates.subscribe { vaultUpdate ->

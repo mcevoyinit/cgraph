@@ -44,7 +44,7 @@ class IssueBalanceFlow(val currencyIsoCode: String, val value: Int) : FlowLogic<
         )
         val txCommand = Command(BalanceContract.Commands.Create(), balanceState.participants.map { it.owningKey })
         val txBuilder = TransactionBuilder(notary)
-            .addOutputState(balanceState, BalanceContract.ID)
+            .addOutputState(balanceState)
             .addCommand(txCommand)
 
         // Verify that the transaction is valid.

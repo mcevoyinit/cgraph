@@ -1,7 +1,6 @@
 package com.cgraph.core.services
 
 import com.cgraph.core.client.GQLClient
-import com.cgraph.core.client.GraphQLResponse
 import com.cgraph.core.mutations.GraphQLMutationGenerator
 import com.cgraph.core.mutations.TransactionType
 import com.cgraph.core.states.GraphableState
@@ -84,7 +83,6 @@ class CGraphService(serviceHub: AppServiceHub) : SingletonSerializeAsToken() {
                 graphables.forEach { mutation ->
                     var request: MapOfMaps? = null
                     try {
-
                         request = performGraphQLRequest(mutation, GraphQLRequestType.MUTATION)
                     } catch (ex: Exception) {
                         logger.info("GraphQL request failed: $ex")
