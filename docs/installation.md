@@ -25,8 +25,8 @@ node {
         name "O=Lender,L=London,C=GB"
         cordapp(project(':cgraph-core')) {
             config '''
-                graphQLUrl="https://dawn-sky.eu-west-1.aws.cloud.dgraph.io"
-                graphQLToken="YjNkN2EwMThjMzhjMDMzM2I1MDFmNWM3ZDE2YTI5YWM="
+                graphQLUrl="<INSERT_GRAPHQL_SERVER_URL>"
+                graphQLToken="<INSERT_GRAPHQL_SERVER_X_AUTH_TOKEN>"
                 graphBraidServerPort=8080
              '''
         }
