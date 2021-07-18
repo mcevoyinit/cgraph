@@ -1,4 +1,4 @@
-![alt text](resources/images/cgraph.png){height=300px width=300px}
+![alt text](docs/resources/images/cgraph.png){height=300px width=300px}
 
 #CGraph - Corda & The Graph
 
