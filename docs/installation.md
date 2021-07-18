@@ -1,4 +1,5 @@
-##CorDapp
+## CorDapp
+### Gradle
 Add to your Cordapp’s Gradle dependencies:
 ```groovy
 dependencies{
@@ -12,6 +13,53 @@ Add CGraph as Cordapps to your deployNodes task:
 
 ```groovy
 cordapp("com.github.mcevoyinit.cgraph:cgraph-core:1.0-SNAPSHOT")
+```
+
+### Config
+You need to tell CGraph in CorDapp config where the node's corresponding GraphQL server lies. 
+For development, you can configure this in both `DriverDSL` testing and in `Cordformation`.
+
+**Cordformation**
+```groovy
+node {
+        name "O=Lender,L=London,C=GB"
+        cordapp(project(':cgraph-core')) {
+            config '''
+                graphQLUrl="https://dawn-sky.eu-west-1.aws.cloud.dgraph.io"
+                graphQLToken="YjNkN2EwMThjMzhjMDMzM2I1MDFmNWM3ZDE2YTI5YWM="
+                graphBraidServerPort=8080
+             '''
+        }
+        cordapp(project("cgraph-example")) {
+            config '''
+                braidServerPort=9090
+             '''
+        }
+       ...
+    }
+```
+or **DriverDSL**
+```kotlin
+startNode(
+    parameters = NodeParameters(
+        providedName = DUMMY_LENDER_NAME,
+        rpcUsers = listOf(user),
+        additionalCordapps = setOf(
+            CGraph.Cordapps.Example.withConfig(
+                mapOf(
+                    "braidServerPort" to 9090
+                )
+            ),
+            CGraph.Cordapps.Core.withConfig(
+                mapOf(
+                    "graphQLUrl" to DGRAPH_URL_LENDER,
+                    "graphQLToken" to DGRAPH_TOKEN_LENDER,
+                    "graphBraidServerPort" to 8080
+                )
+            )
+        )
+    )
+)
 ```
 
 ## Set up your graph
@@ -29,7 +77,7 @@ I'll add a version that works with a single instance for developer convenience i
 
 ```bash
 $GOPATH/bin/dgraph zero
-$GOPATH/bin/dgraph alpha --port_offset 1 
+$GOPATH/bin/dgraph alpha --port_offset 1 //notary clash
 ```
 ### Docker
 
@@ -46,7 +94,7 @@ This is the URL Corda will write to and, the URL clients will read from.
 Hit a terminal in the project root directory:
 
 ```bash
-./gradlew clean deployCGraph
+./gradlew clean deployCGraph TODO
 ./build/nodes/runnodes
 ```
 This brings up 3 nodes (Lender, Borrower and a Notary)
@@ -66,7 +114,7 @@ node.js iou-client.js 3001 8081
     - `Balance` written to ledger. References currency and holder member, from above
     - `IOU` written to ledger. References all of above. IOU in both ledgers and graphs. 
 
-In future versions, I'd like write a more modular architecture for extending and integrating with more graph types, for example:
+In future versions, there could be a more modular architecture for extending and integrating with more graph technologies, for example:
 
     cgraph-cordapp 
     cgraph-client

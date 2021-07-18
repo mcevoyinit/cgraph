@@ -77,8 +77,6 @@ dependencies {
 
     // CorDapp Dependencies
     cordapp project(":cgraph-core:")
-    //cordapp "com.cgraph.core.cgraph:cgraph-core:1.0-SNAPSHOT"
-
     cordapp project(":cgraph-example:")
 
     implementation group: 'javax.validation', name: 'validation-api', version: '1.0.0.GA'
@@ -166,8 +164,12 @@ task deployNodes(type: net.corda.plugins.Cordform, dependsOn: ['jar']) {
 }
 
 allprojects {
-    version "1.0-SNAPSHOT"
-    group "com.cgraph.core"
+    version "1.0"
+    group "com.cgraph"
+
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
 
     configurations.all {
         resolutionStrategy {

@@ -49,11 +49,13 @@ extra:
 
 nav:
   - 'Overview': index.md
-  - 'The Why': why.md
+  - 'The Why':
+      - 'Questions' : why/questions.md
+      - 'Short answers' : why/answers.md
   - 'Concepts' :
+      - 'Domain Data' : concepts/domain-data.md
       - 'The Graph' : concepts/graph.md
       - 'DGraph' : concepts/dgraph.md
-      - 'Domain Data' : concepts/domain-data.md
       - 'Productivity' : concepts/productivity.md
   - 'Solution':
       - 'CorDapp':
@@ -61,6 +63,7 @@ nav:
          - 'CGraph JS' : cordapp/js.md
          - 'IOU Example': cordapp/example.md
       - 'Architecture': architecture/solution.md
+      - 'Upgrades': architecture/upgrades.md
   - 'Installation' : installation.md
   - 'Future': future.md
   - 'FAQ': faq.md

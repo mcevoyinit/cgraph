@@ -64,14 +64,16 @@ private fun registerGraphableUpdatesSubscription(serviceHub: ServiceHub): Subscr
 ```
 
 ## GraphQLMutationGenerator 
- This class generates a mutation based on the shape of the provided state property map. There are two types of mutations supported currenty
-    * Write mutations. These are generated for issued output `GraphableState`s which do not have any inputs.
+ This class generates a mutation based on the shape of the provided state property map. It's pretty raw at the moment but there are two types of mutations supported currently
+    * Write mutations. These are generated for issued the output `GraphableState`s in a transaction, that do not match with any inputs.
     * Update mutations. If a `GraphableState` is transacted from an in input state into a new output state, this class will generate an update mutation, filtering based on the linearid, updating the old graph entry corresponding to the input state with the new fields on the output state. 
  
  The generator can detect based on the presence of UUID type if a nested mutation is needed to write a separate entity. Similarly if a field is empty will setup the mutation to submit an empty entry. 
- These mutations must conform with the schema of course. The samples should illustrates a multi state transaction being written to graph.
+ These mutations must conform with the schema, of course which again is what the `buildEntityMap()` function is for.
+  The samples will soon illustrate a multi state transaction being written to graph. I also need to consider historical data.
 
 ## GQLClient
  This is a vanilla GraphQL HTTP client that uses OKHttp. The above service uses this to write mutations over HTTP to the graph.
-  At the moment, the unique id between states and graph objects is linearid. We can mark a states corresponding id entry in the schema with the `@id` annotation.
-  The graph will those be idempotent to duplicate writes. Handling success and failure will come later via `PersistentGraphableState`
+  At the moment, the unique id between states and graph objects is the `GraphableState` linearId. 
+  We can mark a state's corresponding id entry in the schema with the `@id` annotation.
+  The graphql server can ensure idempotency to prevent duplicate writes. Handling success and failure will come later via `PersistentGraphableState` which can be developed to provide a fault-tolerance, two-phased commit by using Corda's init function and the `GraphableSchema` (more to come).  

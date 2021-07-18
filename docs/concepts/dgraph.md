@@ -19,6 +19,14 @@ Having an all-in-one service greatly speeds up development effort, lowers mainte
 
 Furthermore, this removes the need for writing and maintaining a GraphQL server, resolvers, and middlewares. 
 Maintaining a separate graph server and database processes is heavy-duty!
+
+### Data storage & Retrieval
+
+DGraph provides a novel solution to the N+1 query problem. Data is shared based on the relationship instead of the entity type. 
+This combined with a sharding mechanism then groups RDP triples into KV lists means we can fetch relationships / perform join queries across the cluster in less network calls.
+This also means the latency is the query is function of the *query depth* as opposed to the **number of records in the search space**. 
+These features enable DQL, a GQL extension that is optimised for the KV storage, BadgerDB. 
+
  
 ##GRAND development stack
 There are various layouts which are typically referred to as the GRAND development stack. 
@@ -41,5 +49,5 @@ Another example of the GQL server and db pairing is:
  - **Lacinia** - GraphQL server written in Clojure by Walmart Labs Lacinia - GraphQL for Clojure
  - **Crux** - Bitemporal Graph DB written in Clojure. Crux  
 
-Pairings like the above will considered in future version. They may be better suited to larger Corda deployments.
+Pairings like the above will be considered in future version. They may be better suited to larger Corda deployments.
 The creators of Crux have written a Crux-Corda Connector CorDapp juxt/crux-corda  

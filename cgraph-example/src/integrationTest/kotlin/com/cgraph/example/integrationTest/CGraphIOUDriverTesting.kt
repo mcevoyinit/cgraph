@@ -29,11 +29,11 @@ class CGraphIOUDriverTesting {
     val DUMMY_LENDER_NAME = CordaX500Name("Lender", "London", "GB")
     val DUMMY_BORROWER_NAME = CordaX500Name("Borrower", "Hanoi", "VN")
 
-    val DGRAPH_URL_LENDER = "https://dawn-sky.eu-west-1.aws.cloud.dgraph.io"
-    val DGRAPH_URL_BORROWER = "https://proud-wave.eu-central-1.aws.cloud.dgraph.io"
+    val DGRAPH_URL_LENDER = "<INSERT_GRAPHQL_SERVER_URL"
+    val DGRAPH_URL_BORROWER = "<INSERT_GRAPHQL_SERVER_URL"
     
-    val DGRAPH_TOKEN_LENDER = "YjNkN2EwMThjMzhjMDMzM2I1MDFmNWM3ZDE2YTI5YWM="
-    val DGRAPH_TOKEN_BORROWER = "MTgxOTkyZDcyMjcwYjg1OTE5MGRiNDQwOTUxYjgwMDc="
+    val DGRAPH_TOKEN_LENDER = "<INSERT_GRAPHQL_SERVER_X_AUTH_TOKEN"
+    val DGRAPH_TOKEN_BORROWER = "<INSERT_GRAPHQL_SERVER_X_AUTH_TOKEN"
 
      val user = User(
         username = "user1",

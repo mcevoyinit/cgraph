@@ -102,7 +102,6 @@ dependencies {
 
     //CGraph Core
     cordapp project(":cgraph-core:")
-    //cordapp "com.cgraph.core.cgraph:cgraph-core:1.0-SNAPSHOT"
 }
 
 jar {
