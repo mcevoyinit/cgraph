@@ -4,7 +4,15 @@
      <lastmod>2021-07-18</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://cgraph.io/why/</loc>
+     <loc>https://cgraph.io/why/questions/</loc>
+     <lastmod>2021-07-18</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://cgraph.io/why/answers/</loc>
+     <lastmod>2021-07-18</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://cgraph.io/concepts/domain-data/</loc>
      <lastmod>2021-07-18</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
@@ -13,10 +21,6 @@
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://cgraph.io/concepts/dgraph/</loc>
-     <lastmod>2021-07-18</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://cgraph.io/concepts/domain-data/</loc>
      <lastmod>2021-07-18</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
@@ -37,6 +41,10 @@
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://cgraph.io/architecture/solution/</loc>
+     <lastmod>2021-07-18</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://cgraph.io/architecture/upgrades/</loc>
      <lastmod>2021-07-18</lastmod>
      <changefreq>daily</changefreq>
     </url><url>

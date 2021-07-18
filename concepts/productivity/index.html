@@ -217,10 +217,49 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../../why/" class="md-nav__link">
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      <label class="md-nav__link" for="__nav_2">
         The Why
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="The Why" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          The Why
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../why/questions/" class="md-nav__link">
+        Questions
       </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../why/answers/" class="md-nav__link">
+        Short answers
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -256,6 +295,18 @@
   
   
     <li class="md-nav__item">
+      <a href="../domain-data/" class="md-nav__link">
+        Domain Data
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../graph/" class="md-nav__link">
         The Graph
       </a>
@@ -270,18 +321,6 @@
     <li class="md-nav__item">
       <a href="../dgraph/" class="md-nav__link">
         DGraph
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../domain-data/" class="md-nav__link">
-        Domain Data
       </a>
     </li>
   
@@ -447,6 +486,18 @@
   
 
           
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/upgrades/" class="md-nav__link">
+        Upgrades
+      </a>
+    </li>
+  
+
+          
         </ul>
       </nav>
     </li>
@@ -555,64 +606,66 @@
                   <h1>Productivity</h1>
                 
                 <p>From a Corda solutions engineering perspective, we must consider the productivity of various actors in the Corda software engineering life cycle in order to increase the likelihood of project success. 
-From a Corda perspective, we typically see an extended 4 tier business programming architecture. 
-Many community thought leaders have sought to automate this to improve the lives of CorDapp developers. 
-We saw this succinctly summarised in a blog post by Bond 180 Corda integration options in 2020. </p>
+From a Corda perspective, we typically see an extended 4 tier business programming architecture. </p>
+<p><img alt="alt text" height="350px" src="../../resources/images/4TierModel.png" width="350px" /></p>
+<p>Many community thought leaders have sought to automate this to improve the lives of CorDapp developers. 
+We saw this succinctly summarised in a blog post by Bond 180 <a href="https://www.corda.net/blog/corda-integration-options-in-2020/">Corda integration options in 2020</a></p>
 <h2 id="classic-tier-qualms">Classic tier qualms<a class="headerlink" href="#classic-tier-qualms" title="Permanent link">&para;</a></h2>
 <p>This paradigm frequently comes at a high cost.</p>
 <ul>
 <li>
-<p>Even though it’s Corda, the pattern we all use is more or less CRUD, which can be tedious for accessing simple data points. 
-CRUD is clunky and requires special effort to give me the data I exactly want in a query.  </p>
+<p>Even though it’s Corda, the pattern we all use is more or less CRUD. 
+CRUD is clunky and requires special effort to give me the access and data points I want in a query.  </p>
 </li>
 <li>
-<p>Often I just want to display what’s in the database on my screen. </p>
-</li>
-<li>Why do I need to write, deploy a maintain intermediate, “middle man” relay layers? </li>
-<li>Could the web service be left for custom business logic? </li>
-<li>
-<p>Why does the database have to be in the bottom layer? </p>
-</li>
-<li>
-<p>We certainly don’t want to stick DSL SQL in our client.  It’s not within frontend vernacular to talk to  Postgres/MySQL/Vault Queries.</p>
-</li>
-<li>
-<p>I am constantly writing modifying and maintaining CRUD layers yet making changes in this 4 tier setup is troublesome. </p>
-</li>
-<li>
-<p>Stressful for backend team be “one sprint ahead” of other roles e.g front end, test, data engineers.</p>
-</li>
-<li>
-<p>Backend changes often lead to cascading breakages on other teams components.</p>
-</li>
-<li>
-<p>UIs break, web-server endpoints suddenly don’t work, packages, like RPC clients, need to be recompiled. There’s way more to it. </p>
-</li>
-<li>
-<p>These teams need a common data contract of reference. </p>
+<p>Often I just want to display what’s in the database on my screen. 
+Why does the database have to be in the bottom layer?
+ We certainly don’t want to stick DSL SQL in our client. It’s not within frontend vernacular to talk to SQL db.</p>
 </li>
 </ul>
-<div class="highlight"><pre><span></span><code>The question every new developer asks themselves can finally be raised again; why can’t my view layer talk directly to my data layer? 
+<div class="highlight"><pre><span></span><code>The questions every new developer asks themselves can finally be raised again.
 
-For that there would need to be an API in the database. 
+Why can’t my view layer talk directly to my data layer? 
+Could we talk directly to the database?
+
+For that there would need to be an API &quot;in&quot; the database. 
 </code></pre></div>
+<ul>
+<li>Furthermore, why do I need to write, deploy and maintain intermediate, “middle man” relay layers?
+I am constantly writing modifying and maintaining CRUD layers yet making changes in this 4 tier setup can be troublesome. 
+UIs break, web-server endpoints suddenly don’t work, packages, like RPC clients, need to be recompiled.
+ Of course, this can all be automated but, it is still prone to brittleness.
+Backend changes often lead to cascading breakages on other teams components. 
+It can be stressful for backend team be “one sprint ahead” of other roles e.g front end, test, data engineers.</li>
+</ul>
+<div class="highlight"><pre><span></span><code>Could the web service be left for custom business logic? 
+</code></pre></div>
+<ul>
+<li>For this to manifest, teams need a common data contract of reference and that they can work in parallel against.</li>
+</ul>
 <h2 id="schema-driven-programming">Schema driven programming<a class="headerlink" href="#schema-driven-programming" title="Permanent link">&para;</a></h2>
 <ul>
+<li>DGraph flips the classic tiered model around which could yield high productivity gains.</li>
+</ul>
+<p><img alt="alt text" height="800px" src="../../resources/images/3TierModel.png" width="800px" /></p>
+<ul>
 <li>
-<p>DGraph flips the &frac34; classic tiered model around which could yield high productivity gains.</p>
+<p>Once we define the data model via the schema, DGraph can consume this and generate the CRUD API for us. 
+This CRUD API is adjusted as the schema is adjusted. Front end and backend developers get to go to work straight away, in parallel against a common contract of reference. This alone is a key differentiator of DGraph.</p>
 </li>
 <li>
-<p>Once we define the data model via the schema, DGraph can consume this and generate the CRUD API for us.  This CRUD API is adjusted as the schema is adjusted. Front end and backend developers get to go to work straight away, in parallel against a common contract of reference. This alone is a key differentiator of DGraph.</p>
-</li>
-<li>
-<p>We move the DB from layer 3 to layer 2. One thing this means is we need a DSL that is native to browser/clients. This is where GraphQL comes in. GraphQL is the future DSL of the internet that is easy to work with and use in the browser/mobile environment. It enables us to talk to DB directly. </p>
+<p>We move the DB from layer 3 to layer 2. We then need a DSL that is native to browser/clients to talk directly to the new layer 2 db. 
+GraphQL fits the bill. Many say GraphQL is the future DSL of the internet. It is easy to work with and use in the browser/mobile and client/server environments. 
+It enables us to talk to DB directly.  </p>
 </li>
 <li>
 <p>It gets even better. From the client, we don’t have to worry about knowing whether to talk to the DB or the webserver. 
-Custom GraphQL queries and mutations, also defined on the schema, can inform the database server when to call them versus queries when to talk directly to the DB. 
-DGraph lambdas provide Nodejs (JVM support coming this summer) to call externally. 
-This is where we can start Corda flows over JSON RPC. The sample uses Cordite Braid at the moment but will integrate with Corda 5 embedded server. 
-I expand on this in the solution architecture section but keep the “new” layer 3 in mind.</p>
+Custom GraphQL queries and mutations, also defined on the schema, can inform the database server when to call them versus calling queries that talk directly to the DB. </p>
+</li>
+<li>
+<p>DGraph lambdas provide Nodejs (JVM support coming this summer) to call externally. This is where we can start Corda flows over JSON RPC. 
+The sample uses Cordite Braid at the moment for it's JS client.
+I expand on this in this lambda piece in the solution architecture section but please keep the “new” layer 3 in mind. This is where we move towards the unified system read/write interface.</p>
 </li>
 </ul>
                 
@@ -633,7 +686,7 @@ I expand on this in the solution architecture section but keep the “new” lay
   
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
-        <a href="../domain-data/" class="md-footer__link md-footer__link--prev" rel="prev">
+        <a href="../dgraph/" class="md-footer__link md-footer__link--prev" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -642,7 +695,7 @@ I expand on this in the solution architecture section but keep the “new” lay
               <span class="md-footer__direction">
                 Previous
               </span>
-              Domain Data
+              DGraph
             </div>
           </div>
         </a>

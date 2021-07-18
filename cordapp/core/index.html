@@ -217,10 +217,49 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../../why/" class="md-nav__link">
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      <label class="md-nav__link" for="__nav_2">
         The Why
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="The Why" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          The Why
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../why/questions/" class="md-nav__link">
+        Questions
       </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../why/answers/" class="md-nav__link">
+        Short answers
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -254,6 +293,18 @@
   
   
     <li class="md-nav__item">
+      <a href="../../concepts/domain-data/" class="md-nav__link">
+        Domain Data
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../concepts/graph/" class="md-nav__link">
         The Graph
       </a>
@@ -268,18 +319,6 @@
     <li class="md-nav__item">
       <a href="../../concepts/dgraph/" class="md-nav__link">
         DGraph
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../concepts/domain-data/" class="md-nav__link">
-        Domain Data
       </a>
     </li>
   
@@ -458,6 +497,18 @@
     <li class="md-nav__item">
       <a href="../../architecture/solution/" class="md-nav__link">
         Architecture
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/upgrades/" class="md-nav__link">
+        Upgrades
       </a>
     </li>
   
@@ -642,15 +693,17 @@ User states should implement this, and it's member function, the <code>buildEnti
     <span class="p">}</span>
 </code></pre></div>
 <h2 id="graphqlmutationgenerator">GraphQLMutationGenerator<a class="headerlink" href="#graphqlmutationgenerator" title="Permanent link">&para;</a></h2>
-<p>This class generates a mutation based on the shape of the provided state property map. There are two types of mutations supported currenty
-    * Write mutations. These are generated for issued output <code>GraphableState</code>s which do not have any inputs.
+<p>This class generates a mutation based on the shape of the provided state property map. It's pretty raw at the moment but there are two types of mutations supported currently
+    * Write mutations. These are generated for issued the output <code>GraphableState</code>s in a transaction, that do not match with any inputs.
     * Update mutations. If a <code>GraphableState</code> is transacted from an in input state into a new output state, this class will generate an update mutation, filtering based on the linearid, updating the old graph entry corresponding to the input state with the new fields on the output state. </p>
 <p>The generator can detect based on the presence of UUID type if a nested mutation is needed to write a separate entity. Similarly if a field is empty will setup the mutation to submit an empty entry. 
- These mutations must conform with the schema of course. The samples should illustrates a multi state transaction being written to graph.</p>
+ These mutations must conform with the schema, of course which again is what the <code>buildEntityMap()</code> function is for.
+  The samples will soon illustrate a multi state transaction being written to graph. I also need to consider historical data.</p>
 <h2 id="gqlclient">GQLClient<a class="headerlink" href="#gqlclient" title="Permanent link">&para;</a></h2>
 <p>This is a vanilla GraphQL HTTP client that uses OKHttp. The above service uses this to write mutations over HTTP to the graph.
-  At the moment, the unique id between states and graph objects is linearid. We can mark a states corresponding id entry in the schema with the <code>@id</code> annotation.
-  The graph will those be idempotent to duplicate writes. Handling success and failure will come later via <code>PersistentGraphableState</code></p>
+  At the moment, the unique id between states and graph objects is the <code>GraphableState</code> linearId. 
+  We can mark a state's corresponding id entry in the schema with the <code>@id</code> annotation.
+  The graphql server can ensure idempotency to prevent duplicate writes. Handling success and failure will come later via <code>PersistentGraphableState</code> which can be developed to provide a fault-tolerance, two-phased commit by using Corda's init function and the <code>GraphableSchema</code> (more to come).  </p>
                 
               
               

@@ -217,10 +217,49 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../why/" class="md-nav__link">
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      <label class="md-nav__link" for="__nav_2">
         The Why
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="The Why" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          The Why
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../why/questions/" class="md-nav__link">
+        Questions
       </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../why/answers/" class="md-nav__link">
+        Short answers
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -254,6 +293,18 @@
   
   
     <li class="md-nav__item">
+      <a href="../concepts/domain-data/" class="md-nav__link">
+        Domain Data
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../concepts/graph/" class="md-nav__link">
         The Graph
       </a>
@@ -268,18 +319,6 @@
     <li class="md-nav__item">
       <a href="../concepts/dgraph/" class="md-nav__link">
         DGraph
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../concepts/domain-data/" class="md-nav__link">
-        Domain Data
       </a>
     </li>
   
@@ -402,6 +441,18 @@
   
 
           
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/upgrades/" class="md-nav__link">
+        Upgrades
+      </a>
+    </li>
+  
+
+          
         </ul>
       </nav>
     </li>
@@ -448,6 +499,26 @@
   <a href="#cordapp" class="md-nav__link">
     CorDapp
   </a>
+  
+    <nav class="md-nav" aria-label="CorDapp">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gradle" class="md-nav__link">
+    Gradle
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#config" class="md-nav__link">
+    Config
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -558,6 +629,26 @@
     CorDapp
   </a>
   
+    <nav class="md-nav" aria-label="CorDapp">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gradle" class="md-nav__link">
+    Gradle
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#config" class="md-nav__link">
+    Config
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -621,6 +712,7 @@
                   <h1>Installation</h1>
                 
                 <h2 id="cordapp">CorDapp<a class="headerlink" href="#cordapp" title="Permanent link">&para;</a></h2>
+<h3 id="gradle">Gradle<a class="headerlink" href="#gradle" title="Permanent link">&para;</a></h3>
 <p>Add to your Cordapp’s Gradle dependencies:
 <div class="highlight"><pre><span></span><code><span class="n">dependencies</span><span class="o">{</span>
     <span class="c1">// Corda dependency</span>
@@ -631,6 +723,49 @@ Alternatively, you might want to fetch CGraph as a Cordapp fat JAR, in which cas
 <p>Add CGraph as Cordapps to your deployNodes task:</p>
 <div class="highlight"><pre><span></span><code><span class="n">cordapp</span><span class="o">(</span><span class="s2">&quot;com.github.mcevoyinit.cgraph:cgraph-core:1.0-SNAPSHOT&quot;</span><span class="o">)</span>
 </code></pre></div>
+<h3 id="config">Config<a class="headerlink" href="#config" title="Permanent link">&para;</a></h3>
+<p>You need to tell CGraph in CorDapp config where the node's corresponding GraphQL server lies. 
+For development, you can configure this in both <code>DriverDSL</code> testing and in <code>Cordformation</code>.</p>
+<p><strong>Cordformation</strong>
+<div class="highlight"><pre><span></span><code><span class="n">node</span> <span class="o">{</span>
+        <span class="n">name</span> <span class="s2">&quot;O=Lender,L=London,C=GB&quot;</span>
+        <span class="n">cordapp</span><span class="o">(</span><span class="n">project</span><span class="o">(</span><span class="s1">&#39;:cgraph-core&#39;</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">config</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">                graphQLUrl=&quot;&lt;INSERT_GRAPHQL_SERVER_URL&gt;&quot;</span>
+<span class="s1">                graphQLToken=&quot;&lt;INSERT_GRAPHQL_SERVER_X_AUTH_TOKEN&gt;&quot;</span>
+<span class="s1">                graphBraidServerPort=8080</span>
+<span class="s1">             &#39;&#39;&#39;</span>
+        <span class="o">}</span>
+        <span class="n">cordapp</span><span class="o">(</span><span class="n">project</span><span class="o">(</span><span class="s2">&quot;cgraph-example&quot;</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">config</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">                braidServerPort=9090</span>
+<span class="s1">             &#39;&#39;&#39;</span>
+        <span class="o">}</span>
+       <span class="o">...</span>
+    <span class="o">}</span>
+</code></pre></div>
+or <strong>DriverDSL</strong>
+<div class="highlight"><pre><span></span><code><span class="n">startNode</span><span class="p">(</span>
+    <span class="n">parameters</span> <span class="o">=</span> <span class="n">NodeParameters</span><span class="p">(</span>
+        <span class="n">providedName</span> <span class="o">=</span> <span class="n">DUMMY_LENDER_NAME</span><span class="p">,</span>
+        <span class="n">rpcUsers</span> <span class="o">=</span> <span class="n">listOf</span><span class="p">(</span><span class="n">user</span><span class="p">),</span>
+        <span class="n">additionalCordapps</span> <span class="o">=</span> <span class="n">setOf</span><span class="p">(</span>
+            <span class="n">CGraph</span><span class="p">.</span><span class="na">Cordapps</span><span class="p">.</span><span class="na">Example</span><span class="p">.</span><span class="na">withConfig</span><span class="p">(</span>
+                <span class="n">mapOf</span><span class="p">(</span>
+                    <span class="s">&quot;braidServerPort&quot;</span> <span class="n">to</span> <span class="m">9090</span>
+                <span class="p">)</span>
+            <span class="p">),</span>
+            <span class="n">CGraph</span><span class="p">.</span><span class="na">Cordapps</span><span class="p">.</span><span class="na">Core</span><span class="p">.</span><span class="na">withConfig</span><span class="p">(</span>
+                <span class="n">mapOf</span><span class="p">(</span>
+                    <span class="s">&quot;graphQLUrl&quot;</span> <span class="n">to</span> <span class="n">DGRAPH_URL_LENDER</span><span class="p">,</span>
+                    <span class="s">&quot;graphQLToken&quot;</span> <span class="n">to</span> <span class="n">DGRAPH_TOKEN_LENDER</span><span class="p">,</span>
+                    <span class="s">&quot;graphBraidServerPort&quot;</span> <span class="n">to</span> <span class="m">8080</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div></p>
 <h2 id="set-up-your-graph">Set up your graph<a class="headerlink" href="#set-up-your-graph" title="Permanent link">&para;</a></h2>
 <p>You need to specify the GraphQL server that CGraph will connect to. 
 I chose DGraph as a first integration since the GraphQL server and KV store are in one process. However any GraphQL server should work. 
@@ -641,7 +776,7 @@ I'll add a version that works with a single instance for developer convenience i
 <h3 id="locally">Locally<a class="headerlink" href="#locally" title="Permanent link">&para;</a></h3>
 <p><code>Golang</code> set up golang and fetch binaries at <a href="https://dgraph.io/downloads">DGraph Downloads</a></p>
 <div class="highlight"><pre><span></span><code><span class="nv">$GOPATH</span>/bin/dgraph zero
-<span class="nv">$GOPATH</span>/bin/dgraph alpha --port_offset <span class="m">1</span> 
+<span class="nv">$GOPATH</span>/bin/dgraph alpha --port_offset <span class="m">1</span> //notary clash
 </code></pre></div>
 <h3 id="docker">Docker<a class="headerlink" href="#docker" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>docker run --rm -it -p <span class="s2">&quot;8080:8080&quot;</span> -p <span class="s2">&quot;9080:9080&quot;</span> -p <span class="s2">&quot;8000:8000&quot;</span> -v ~/dgraph:/dgraph <span class="s2">&quot;dgraph/standalone:v21.03.0&quot;</span>
@@ -651,7 +786,7 @@ You can also edit the testing config in <code>CGraphIOUDriverTesting</code> to r
 This is the URL Corda will write to and, the URL clients will read from. </p>
 <h3 id="running-cgraph">Running CGraph<a class="headerlink" href="#running-cgraph" title="Permanent link">&para;</a></h3>
 <p>Hit a terminal in the project root directory:</p>
-<p><div class="highlight"><pre><span></span><code>./gradlew clean deployCGraph
+<p><div class="highlight"><pre><span></span><code>./gradlew clean deployCGraph TODO
 ./build/nodes/runnodes
 </code></pre></div>
 This brings up 3 nodes (Lender, Borrower and a Notary)</p>
@@ -671,7 +806,7 @@ node.js iou-client.js 3001 8081
 </ul>
 </li>
 </ul>
-<p>In future versions, I'd like write a more modular architecture for extending and integrating with more graph types, for example:</p>
+<p>In future versions, there could be a more modular architecture for extending and integrating with more graph technologies, for example:</p>
 <pre><code>cgraph-cordapp 
 cgraph-client
 cgraph-schema-generator 
@@ -697,7 +832,7 @@ cgraph-sample-cordapp
   
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
-        <a href="../architecture/solution/" class="md-footer__link md-footer__link--prev" rel="prev">
+        <a href="../architecture/upgrades/" class="md-footer__link md-footer__link--prev" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -706,7 +841,7 @@ cgraph-sample-cordapp
               <span class="md-footer__direction">
                 Previous
               </span>
-              Architecture
+              Upgrades
             </div>
           </div>
         </a>
