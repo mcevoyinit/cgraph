@@ -1,6 +1,6 @@
-![alt text](docs/resources/images/cgraph.png){height=300px width=300px}
+![alt text](docs/resources/images/cgraph.png)
 
-#CGraph - Corda & The Graph
+# CGraph - Corda & The Graph
 
 CGraph is a simple connector library that allows you to pipe verified data from Corda into a GraphQL server and database, over HTTP. 
 
