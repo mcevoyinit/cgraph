@@ -25,4 +25,6 @@ dependencies{
 } 
 ```  
 
+Learn more over at the [CGraph Documentation](https://mcevoyinit.github.io/cgraph)
+
     
