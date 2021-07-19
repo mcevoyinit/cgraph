@@ -3,8 +3,8 @@
 Add to your Cordapp’s Gradle dependencies:
 ```groovy
 dependencies{
-    // Corda dependency
-    cordaCompile "com.github.mcevoyinit.cgraph:cgraph-core:1.0-SNAPSHOT" 
+    // CorDapp dependency
+    cordaCompile "com.cgraph:cgraph-core:1.0.0"
 } 
 ```   
 Alternatively, you might want to fetch CGraph as a Cordapp fat JAR, in which case use compile instead of `cordaCompile` and skip the step below.
@@ -12,7 +12,7 @@ Alternatively, you might want to fetch CGraph as a Cordapp fat JAR, in which cas
 Add CGraph as Cordapps to your deployNodes task:
 
 ```groovy
-cordapp("com.github.mcevoyinit.cgraph:cgraph-core:1.0-SNAPSHOT")
+cordapp("com.cgraph:cgraph-core:1.0.0")
 ```
 
 ### Config
