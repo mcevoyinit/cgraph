@@ -14,7 +14,7 @@ import java.util.*
  *
  * A state must implement [ContractState] or one of its descendants.
  * This state also implements [GraphableState] and its member function
- * which defines its graph schema equivalent
+ * which defines its graph schema entity equivalent
  *
  * @param value the value of the IOU.
  * @param lender the party issuing the IOU.
