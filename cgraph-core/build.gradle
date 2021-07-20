@@ -23,7 +23,6 @@ dependencies {
     compile 'io.cordite.braid:braid-corda:5.0.0-RC09'
 
     // Corda dependencies.
-    // Corda integration dependencies
     cordaCompile "net.corda:corda-core:$corda_release_version"
     cordaCompile "net.corda:corda-jackson:$corda_release_version"
     cordaCompile "net.corda:corda-rpc:$corda_release_version"
@@ -48,8 +47,8 @@ publishing {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/mcevoyinit/cgraph")
             credentials {
-                username = "mcevoyinit" //project.findProperty("gpr.user") ?: System.getenv("GITHUB_USERNAME")
-                password = "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" //project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
             }
         }
     }
