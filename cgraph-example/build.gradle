@@ -35,12 +35,17 @@ repositories {
 }
 
 dependencies {
+    //Braid
+    compile 'io.cordite.braid:braid-corda:5.0.0-RC09'
+
+    //CGraph Core
+    cordapp project(":cgraph-core:")
+
     // Kotlin.
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation 'com.squareup.okhttp3:okhttp:3.14.6'
 
     // Corda dependencies.
-    // Corda integration dependencies
     cordaCompile "net.corda:corda-core:$corda_release_version"
     cordaCompile "net.corda:corda-jackson:$corda_release_version"
     cordaCompile "net.corda:corda-rpc:$corda_release_version"
@@ -48,30 +53,16 @@ dependencies {
     cordaRuntime "net.corda:corda:$corda_release_version"
     cordaCompile "net.corda:corda-node:$corda_release_version"
 
-    testCompile "net.corda:corda-node-driver:$corda_release_version"
-
     // Corda Test Dependencies
-    implementation "$corda_group:corda-core:$corda_release_version"
-    implementation "$corda_group:corda-node-driver:$corda_release_version"
+    testImplementation "net.corda:corda-node-driver:$corda_release_version"
+    testImplementation "$corda_group:corda-core:$corda_release_version"
 
     // Logging.
-    testCompile "org.apache.logging.log4j:log4j-slf4j-impl:${log4j_version}"
+    testImplementation "org.apache.logging.log4j:log4j-slf4j-impl:${log4j_version}"
 
     // Testing.
-    testCompile "$corda_group:corda-node-driver:$corda_release_version"
-    testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
-    //testCompile "$junit_group:junit:junit:$junit_version"
-    implementation "$junit_group:junit-jupiter-engine:$junit_version"
-    implementation "$junit_group:junit-jupiter-api:$junit_version"
-
-    //Braid
-    compile 'io.cordite.braid:braid-corda:5.0.0-RC09'
-
-    // DGraph
-    compile 'com.google.code.gson:gson:2.7'
-    implementation 'org.json:json:20171018'
-
-    //CGraph Core
-    //cordapp project(":cgraph-core:")
-    cordapp "com.cgraph:cgraph-core:1.0.0"
+    testImplementation "$corda_group:corda-node-driver:$corda_release_version"
+    testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
+    testImplementation "$junit_group:junit-jupiter-engine:$junit_version"
+    testImplementation "$junit_group:junit-jupiter-api:$junit_version"
 }
