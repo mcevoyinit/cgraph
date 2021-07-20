@@ -13,14 +13,17 @@ cordapp {
 }
 
 dependencies {
+    // Kotlin.
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+    // OkHttp
+    implementation 'com.squareup.okhttp3:okhttp:3.14.6'
+
     //Braid
     compile 'io.cordite.braid:braid-corda:5.0.0-RC09'
 
-    // Kotlin.
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation 'com.squareup.okhttp3:okhttp:3.14.6'
-
     // Corda dependencies.
+    // Corda integration dependencies
     cordaCompile "net.corda:corda-core:$corda_release_version"
     cordaCompile "net.corda:corda-jackson:$corda_release_version"
     cordaCompile "net.corda:corda-rpc:$corda_release_version"
@@ -28,14 +31,10 @@ dependencies {
     cordaRuntime "net.corda:corda:$corda_release_version"
     cordaCompile "net.corda:corda-node:$corda_release_version"
 
-    // Corda Test Dependencies
-    testImplementation "net.corda:corda-node-driver:$corda_release_version"
-    testImplementation "$corda_group:corda-core:$corda_release_version"
-
-    // Logging.
-    testImplementation "org.apache.logging.log4j:log4j-slf4j-impl:${log4j_version}"
-
     // Testing.
+    implementation "$corda_group:corda-node-driver:$corda_release_version"
+    testImplementation "$corda_group:corda-core:$corda_release_version"
+    testImplementation "org.apache.logging.log4j:log4j-slf4j-impl:${log4j_version}"
     testImplementation "$corda_group:corda-node-driver:$corda_release_version"
     testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
     testImplementation "$junit_group:junit-jupiter-engine:$junit_version"
@@ -50,7 +49,7 @@ publishing {
             url = uri("https://maven.pkg.github.com/mcevoyinit/cgraph")
             credentials {
                 username = "mcevoyinit" //project.findProperty("gpr.user") ?: System.getenv("GITHUB_USERNAME")
-                password = "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" //project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+                password = "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" //project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
             }
         }
     }
