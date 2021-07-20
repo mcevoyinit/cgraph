@@ -715,13 +715,13 @@
 <h3 id="gradle">Gradle<a class="headerlink" href="#gradle" title="Permanent link">&para;</a></h3>
 <p>Add to your Cordapp’s Gradle dependencies:
 <div class="highlight"><pre><span></span><code><span class="n">dependencies</span><span class="o">{</span>
-    <span class="c1">// Corda dependency</span>
-    <span class="n">cordaCompile</span> <span class="s2">&quot;com.github.mcevoyinit.cgraph:cgraph-core:1.0-SNAPSHOT&quot;</span> 
+    <span class="c1">// CorDapp dependency</span>
+    <span class="n">cordaCompile</span> <span class="s2">&quot;com.cgraph:cgraph-core:1.0.0&quot;</span>
 <span class="o">}</span> 
 </code></pre></div>
 Alternatively, you might want to fetch CGraph as a Cordapp fat JAR, in which case use compile instead of <code>cordaCompile</code> and skip the step below.</p>
 <p>Add CGraph as Cordapps to your deployNodes task:</p>
-<div class="highlight"><pre><span></span><code><span class="n">cordapp</span><span class="o">(</span><span class="s2">&quot;com.github.mcevoyinit.cgraph:cgraph-core:1.0-SNAPSHOT&quot;</span><span class="o">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">cordapp</span><span class="o">(</span><span class="s2">&quot;com.cgraph:cgraph-core:1.0.0&quot;</span><span class="o">)</span>
 </code></pre></div>
 <h3 id="config">Config<a class="headerlink" href="#config" title="Permanent link">&para;</a></h3>
 <p>You need to tell CGraph in CorDapp config where the node's corresponding GraphQL server lies. 
