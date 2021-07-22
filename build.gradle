@@ -86,3 +86,68 @@ subprojects {
         useJUnitPlatform()
     }
 }
+
+task deployCGraph(type: net.corda.plugins.Cordform, dependsOn: ['jar']) {
+    directory "./build/nodes"
+    nodeDefaults {
+        projectCordapp {
+            deploy = false
+        }
+        rpcUsers = [[user: "guest", "password": "letmein", "permissions": ["ALL"]]]
+    }
+    node {
+        name "O=Notary,L=London,C=GB"
+        notary = [validating: false]
+        p2pPort 10002
+        rpcSettings {
+            address("localhost:10003")
+            adminAddress("localhost:10043")
+        }
+        cordapps.clear()
+    }
+
+    node {
+        name "O=Lender,L=London,C=GB"
+        cordapp(project(':cgraph-core')) {
+            config '''
+                graphQLUrl="<INSERT_GRAPHQL_URL"
+                graphQLToken=<INSERT_GRAPHQL_TOKEN"
+                graphBraidServerPort=8080
+             '''
+        }
+        cordapp(project("cgraph-example")) {
+            config '''
+                braidServerPort=9090
+             '''
+        }
+        p2pPort 10004
+        rpcSettings {
+            address("localhost:10005")
+            adminAddress("localhost:10045")
+        }
+        // Starts an internal SSH server providing a management shell on the node.
+        sshdPort 2222
+    }
+    node {
+        name "O=Borrower,L=Berlin,C=DE"
+        cordapp(project(':cgraph-core')) {
+            config '''
+                graphQLUrl="<INSERT_GRAPHQL_URL"
+                graphQLToken=<INSERT_GRAPHQL_TOKEN"
+                graphBraidServerPort=8081
+             '''
+        }
+        cordapp(project("cgraph-example")) {
+            config '''
+                braidServerPort=9091
+             '''
+        }
+        p2pPort 10008
+        rpcSettings {
+            address("localhost:10009")
+            adminAddress("localhost:10049")
+        }
+        // Starts an internal SSH server providing a management shell on the node.
+        sshdPort 2223
+    }
+}

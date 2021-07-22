@@ -56,7 +56,7 @@ dependencies {
     cordaCompile "net.corda:corda-node:$corda_release_version"
 
     // Testing.
-    implementation "$corda_group:corda-node-driver:$corda_release_version"
+    testImplementation "$corda_group:corda-node-driver:$corda_release_version"
     testImplementation "$corda_group:corda-core:$corda_release_version"
     testImplementation "org.apache.logging.log4j:log4j-slf4j-impl:${log4j_version}"
     testImplementation "$corda_group:corda-node-driver:$corda_release_version"
