@@ -1,29 +1,18 @@
-cordapp {
-    targetPlatformVersion cordapp_platform_version
-    minimumPlatformVersion cordapp_platform_version
-    workflow {
-        name 'CGraph Example'
-        vendor "Corda Open Source"
-        licence "Apache License, Version 2.0"
-        versionId 1
-    }
-    signing {
-         enabled = false
-    }
-}
-
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
-    kotlinOptions {
-        freeCompilerArgs = ["-Xnormalize-constructor-calls=enable"]
-        languageVersion = "1.2"
-        apiVersion = "1.2"
-        jvmTarget = "1.8"
-        javaParameters = true
-    }
-}
-
 repositories {
+    maven {
+        url 'https://repo1.maven.org/maven2'
+    }
+    mavenLocal()
     mavenCentral()
+    jcenter()
+    maven { url 'https://jitpack.io' }
+    maven { url 'https://ci-artifactory.corda.r3cev.com/artifactory/corda' }
+    maven { url 'https://repo.gradle.org/gradle/libs-releases' }
+    maven { url "https://ci-artifactory.corda.r3cev.com/artifactory/corda-lib" }
+    maven { url "https://ci-artifactory.corda.r3cev.com/artifactory/corda-lib-dev" }
+    maven { url "https://ci-artifactory.corda.r3cev.com/artifactory/corda" }
+    maven { url "https://ci-artifactory.corda.r3cev.com/artifactory/corda-releases" }
+    maven { url "https://jitpack.io" }
     maven {
         name = "GitHubPackages"
         url = uri("https://maven.pkg.github.com/mcevoyinit/cgraph")
@@ -32,6 +21,54 @@ repositories {
             password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
         }
     }
+}
+
+apply plugin: 'kotlin'
+apply plugin: 'net.corda.plugins.cordapp'
+apply plugin: 'net.corda.plugins.cordformation'
+apply plugin: 'net.corda.plugins.quasar-utils'
+
+cordapp {
+
+    targetPlatformVersion cordapp_platform_version.toInteger()
+    minimumPlatformVersion cordapp_platform_version.toInteger()
+
+    workflow {
+        name "CGraph-Example"
+        vendor "Corda Open Source"
+        licence "Apache License, Version 2.0"
+        versionId 1
+    }
+    signing {
+        enabled false
+    }
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDir rootProject.file("config/dev")
+        }
+    }
+
+    test {
+        resources {
+            srcDir rootProject.file("config/test")
+        }
+    }
+
+    integrationTest {
+        kotlin {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDir file('src/integrationTest/kotlin')
+        }
+    }
+}
+
+configurations {
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
 }
 
 dependencies {
@@ -45,7 +82,8 @@ dependencies {
     compile 'io.cordite.braid:braid-corda:5.0.0-RC09'
 
     // CGraph
-    cordapp "com.cgraph:cgraph-core:1.0.0"
+    //cordapp "com.cgraph:cgraph-core:1.0.0"
+    cordapp project(":cgraph-core:")
 
     // Corda dependencies
     cordaCompile "net.corda:corda-core:$corda_release_version"
@@ -63,4 +101,24 @@ dependencies {
     testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
     testImplementation "$junit_group:junit-jupiter-engine:$junit_version"
     testImplementation "$junit_group:junit-jupiter-api:$junit_version"
+}
+
+jar {
+    exclude '**/log4j2*.xml'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
+    kotlinOptions {
+        freeCompilerArgs = ["-Xnormalize-constructor-calls=enable"]
+        languageVersion = "1.2"
+        apiVersion = "1.2"
+        jvmTarget = "1.8"
+        javaParameters = true
+    }
+}
+
+task integrationTest(type: Test, dependsOn: []) {
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
 }
