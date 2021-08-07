@@ -1,0 +1,21 @@
+mutation {
+  addBalance(input: [
+      {
+          id: "balance0"
+          value: "0"
+          currency : {
+            id: "alpha"
+          }
+      }
+
+  ]) {
+    balance {
+      id
+      value
+      currency {
+        id
+        name
+      }
+    }
+  }
+}

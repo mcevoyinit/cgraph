@@ -1,0 +1,28 @@
+mutation {
+  addIOU(input: [
+      {
+          id: "iou1"
+          value: "100000"
+          currency : {
+            id: "alpha"
+          }
+      		lender: {
+            id: "member1"
+            cordaNodeName: "O=Lender,L=London,C=GB"
+          }
+          borrower: {
+            id: "member2"
+            cordaNodeName: "O=Borrower,L=Bangkok,C=TH"
+          }
+      }
+  ]) {
+  iOU {
+      id
+      value
+      currency {
+        id
+        name
+      }
+    }
+  }
+}
