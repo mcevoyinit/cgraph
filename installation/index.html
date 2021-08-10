@@ -779,9 +779,9 @@ This is the URL Corda will write to and, the URL clients will read from. </p>
 This brings up 3 nodes (Lender, Borrower and a Notary)</p>
 <p>You then need to connect each Nodejs client to its corresponding node
 <div class="highlight"><pre><span></span><code>cd cgraph/cgraph-js/
-node.js iou-client.js 3000 8080
+node.js cgraph-example-client.js 3000 8080
 // new terminal tab
-node.js iou-client.js 3001 8081
+node.js cgraph-example-client.js 3001 8081
 </code></pre></div></p>
 <ul>
 <li>You can interact with this HTTP API by using the Insomnia HTTP client json script <code>CGraphInsomnia.json</code> in the <code>resources/scripts</code> folder. </li>
