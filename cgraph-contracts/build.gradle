@@ -2,7 +2,7 @@ cordapp {
     targetPlatformVersion cordapp_platform_version
     minimumPlatformVersion cordapp_platform_version
     contract {
-        name cordapp_contract_name
+        name "CGraph Contracts"
         vendor cordapp_vendor_name
         licence cordapp_license
         versionId cordapp_version_id

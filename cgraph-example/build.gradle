@@ -12,7 +12,7 @@ cordapp {
     }
 }
 
-dependencies{
+dependencies {
     // Kotlin
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
@@ -23,9 +23,8 @@ dependencies{
     compile 'io.cordite.braid:braid-corda:5.0.0-RC09'
 
     // CGraph
-    //cordapp "com.cgraph:cgraph-core:1.0.0"
-    cordapp project(":cgraph-contracts")
-    cordapp project(":cgraph-core")
+    cordapp "io.cgraph:cgraph-core:1.0.0"
+    cordapp "io.cgraph:cgraph-contracts:1.0.0"
 
     // Corda dependencies
     cordaCompile "net.corda:corda-core:$corda_release_version"

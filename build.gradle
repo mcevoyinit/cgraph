@@ -46,6 +46,14 @@ subprojects {
         maven { url "$corda_artifactory_url/corda-releases" }
         maven { url "$corda_artifactory_url/corda-dependencies" }
         maven { url "https://repo.gradle.org/gradle/libs-releases" }
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/mcevoyinit/cgraph")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
     }
 
     configurations {
