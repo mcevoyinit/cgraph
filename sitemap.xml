@@ -1,59 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url>
      <loc>https://cgraph.io/</loc>
-     <lastmod>2021-08-10</lastmod>
+     <lastmod>2021-08-11</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://cgraph.io/why/questions/</loc>
-     <lastmod>2021-08-10</lastmod>
+     <lastmod>2021-08-11</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://cgraph.io/why/answers/</loc>
-     <lastmod>2021-08-10</lastmod>
+     <lastmod>2021-08-11</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://cgraph.io/concepts/domain-data/</loc>
-     <lastmod>2021-08-10</lastmod>
+     <lastmod>2021-08-11</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://cgraph.io/concepts/graph/</loc>
-     <lastmod>2021-08-10</lastmod>
+     <lastmod>2021-08-11</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://cgraph.io/concepts/dgraph/</loc>
-     <lastmod>2021-08-10</lastmod>
+     <lastmod>2021-08-11</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://cgraph.io/concepts/productivity/</loc>
-     <lastmod>2021-08-10</lastmod>
+     <lastmod>2021-08-11</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://cgraph.io/cordapp/core/</loc>
-     <lastmod>2021-08-10</lastmod>
+     <lastmod>2021-08-11</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://cgraph.io/cordapp/js/</loc>
-     <lastmod>2021-08-10</lastmod>
+     <lastmod>2021-08-11</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://cgraph.io/cordapp/example/</loc>
-     <lastmod>2021-08-10</lastmod>
+     <lastmod>2021-08-11</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://cgraph.io/architecture/solution/</loc>
-     <lastmod>2021-08-10</lastmod>
+     <lastmod>2021-08-11</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://cgraph.io/architecture/upgrades/</loc>
-     <lastmod>2021-08-10</lastmod>
+     <lastmod>2021-08-11</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://cgraph.io/installation/</loc>
-     <lastmod>2021-08-10</lastmod>
+     <lastmod>2021-08-11</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://cgraph.io/future/</loc>
-     <lastmod>2021-08-10</lastmod>
+     <lastmod>2021-08-11</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
