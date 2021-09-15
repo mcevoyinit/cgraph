@@ -24,7 +24,8 @@ dependencies {
 
     // CGraph
     cordapp "io.cgraph:cgraph-core:1.0.0"
-    cordapp "io.cgraph:cgraph-contracts:1.0.0"
+    cordapp "io.cgraph:cgraph-contract:1.0.0"
+    //cordapp project(":cgraph-contracts")
 
     // Corda dependencies
     cordaCompile "net.corda:corda-core:$corda_release_version"

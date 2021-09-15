@@ -33,7 +33,6 @@ data class IOUState(val value: Int,
                     override val linearId: UniqueIdentifier
 ) : GraphableState {
 
-    //** The public keys of the involved parties. *//
     override val participants: List<AbstractParty> get() = listOf(lender, borrower)
 
     override fun buildEntityMap(): MapOfMaps {

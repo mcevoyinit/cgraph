@@ -63,10 +63,6 @@ subprojects {
         }
     }
 
-    apply plugin: 'kotlin'
-    apply plugin: 'maven-publish'
-    apply plugin: 'net.corda.plugins.cordapp'
-
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
         kotlinOptions {
             languageVersion = "1.2"
@@ -75,6 +71,10 @@ subprojects {
             javaParameters = true
         }
     }
+
+    apply plugin: 'kotlin'
+    apply plugin: 'maven-publish'
+    apply plugin: 'net.corda.plugins.cordapp'
 
     jar {
         exclude '**/log4j2*.xml'
