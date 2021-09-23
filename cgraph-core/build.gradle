@@ -22,7 +22,7 @@ dependencies {
         //Braid
         compile 'io.cordite.braid:braid-corda:5.0.0-RC09'
 
-        cordapp project(":cgraph-contracts")
+        cordapp "io.cgraph:cgraph-contract:1.0.0"
 
          // Corda dependencies
         cordaCompile "net.corda:corda-core:$corda_release_version"

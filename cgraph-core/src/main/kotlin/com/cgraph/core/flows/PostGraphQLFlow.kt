@@ -1,7 +1,7 @@
 package com.cgraph.core.flows
 
 import co.paralleluniverse.fibers.Suspendable
-import com.cgraph.contracts.states.uuid
+import com.cgraph.contract.uuid
 import com.cgraph.core.services.GraphQLRequestType
 import com.cgraph.core.services.graphService
 import net.corda.core.flows.FlowLogic

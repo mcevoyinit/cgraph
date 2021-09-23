@@ -1,14 +1,11 @@
 package com.cgraph.example.flows
 
 import co.paralleluniverse.fibers.Suspendable
-import com.cgraph.contracts.states.graphableString
-import com.cgraph.contracts.states.uuid
+import com.cgraph.contract.graphableString
+import com.cgraph.contract.uuid
 import com.cgraph.core.services.graphService
 import com.cgraph.example.sample.memberIdForX500Name
-import com.cgraph.example.sample.queryBalanceIdForCurrencyId
 import com.cgraph.example.sample.queryCurrencyIdByName
-import com.cgraph.example.states.BalanceContract
-import com.cgraph.example.states.BalanceState
 import com.cgraph.example.states.IOUContract
 import com.cgraph.example.states.IOUState
 import net.corda.core.contracts.Command
@@ -16,9 +13,6 @@ import net.corda.core.contracts.UniqueIdentifier
 import net.corda.core.contracts.requireThat
 import net.corda.core.flows.*
 import net.corda.core.identity.Party
-import net.corda.core.node.services.Vault
-import net.corda.core.node.services.queryBy
-import net.corda.core.node.services.vault.QueryCriteria
 import net.corda.core.transactions.SignedTransaction
 import net.corda.core.transactions.TransactionBuilder
 import net.corda.core.utilities.ProgressTracker
@@ -75,36 +69,11 @@ class IssueIOUFlow(val iouValue: Int,
             borrower = borrower,
             borrowerMemberId = borrowerMemberId
         )
-        
-        val lenderBalanceId = graphService.queryBalanceIdForCurrencyId(currencyId.toString())?.uuid() ?: error("Balance not present for currency $currencyId")
-        val lenderQueryCriteria = QueryCriteria.LinearStateQueryCriteria(
-            null,
-            listOf(UniqueIdentifier(id = lenderBalanceId)),
-            Vault.StateStatus.UNCONSUMED, null)
-
-        val lenderInputBalanceState = serviceHub.vaultService.queryBy<BalanceState>(lenderQueryCriteria).states.singleOrNull() ?: error("Balance state not present for $currencyId")
-        val lenderBalanceValue = lenderInputBalanceState.state.data.value
-        val lenderOutputBalanceState = lenderInputBalanceState.state.data.copy(value = (lenderBalanceValue - iouState.value))
-
-       // val borrowerFlowSession = initiateFlow(borrower)
-        // borrowerFlowSession.send(currencyId.toString())
-       // val borrowerInputBalanceState = subFlow(ReceiveStateAndRefFlow<BalanceState>(borrowerFlowSession)).first()
-
-       // val borrowerBalanceValue = borrowerInputBalanceState.state.data.value
-       // val borrowerOutputBalanceState = borrowerInputBalanceState.state.data.copy(value = borrowerBalanceValue + iouState.value)
 
         val iouCommand = Command(IOUContract.Commands.Create(), iouState.participants.map { it.owningKey })
-        val lenderBalanceCommand = Command(BalanceContract.Commands.Create(), lenderOutputBalanceState.participants.map { it.owningKey })
-        //val borrowerBalanceCommand = Command(BalanceContract.Commands.Create(), borrowerOutputBalanceState.participants.map { it.owningKey })
 
         val txBuilder = TransactionBuilder(notary)
-        //    .addInputState(lenderInputBalanceState)
-        //    .addInputState(borrowerInputBalanceState)
-         //   .addOutputState(lenderOutputBalanceState, BalanceContract.ID)
-        //    .addOutputState(borrowerOutputBalanceState, BalanceContract.ID)
             .addOutputState(iouState, IOUContract.ID)
-       //     .addCommand(BalanceContract.Commands.Create(), lenderOutputBalanceState.participants.map { it.owningKey })
-            //.addCommand(borrowerBalanceCommand)
             .addCommand(iouCommand)
 
         // Verify that the transaction is valid.
@@ -127,28 +96,14 @@ class Acceptor(val borrowerSession: FlowSession) : FlowLogic<SignedTransaction>(
 
         @Suspendable
         override fun call(): SignedTransaction {
-  /*          val currencyId = borrowerSession.receive<String>()
-                .unwrap {
-                    it
-                }
-            val graphService = serviceHub.graphService()
-            val balanceId = graphService.queryBalanceIdForCurrencyId(currencyId)?.uuid() ?: error("Balance not present for currency $currencyId")
-            val queryCriteria = QueryCriteria.LinearStateQueryCriteria(
-                null,
-                listOf(UniqueIdentifier(id = balanceId)),
-                Vault.StateStatus.UNCONSUMED, null)
-
-            val borrowerBalanceState = serviceHub.vaultService.queryBy<BalanceState>(queryCriteria).states.singleOrNull() ?: error("Balance state not present for $currencyId")
-
-            subFlow(SendStateAndRefFlow(borrowerSession, listOf(borrowerBalanceState)))*/
 
             val signTransactionFlow = object : SignTransactionFlow(borrowerSession) {
                 override fun checkTransaction(stx: SignedTransaction) = requireThat {
-                    "This must be an IOU transaction." using (true)
+                    "This must be true" using (true)
                 }
             }
-            val txId = subFlow(signTransactionFlow).id
 
-            return subFlow(ReceiveFinalityFlow(borrowerSession))//, expectedTxId = txId))
+            val tx = subFlow(signTransactionFlow)
+            return subFlow(ReceiveFinalityFlow(borrowerSession, expectedTxId = tx.id))
         }
     }

@@ -29,7 +29,6 @@ class UpdateBalanceFlow(
 
     @Suspendable
     override fun call(): SignedTransaction {
-        // Obtain a reference to the notary we want to use.
         val notary = serviceHub.networkMapCache.notaryIdentities[0]
 
         val balanceQueryCriteria = QueryCriteria.LinearStateQueryCriteria(

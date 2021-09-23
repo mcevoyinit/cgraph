@@ -1,6 +1,6 @@
 package com.cgraph.core.future
 
-import com.cgraph.contracts.states.MapOfMaps
+import com.cgraph.contract.MapOfMaps
 
 /**
  * Placeholder interface for generating schemas based on state data.

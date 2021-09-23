@@ -1,8 +1,8 @@
 package com.cgraph.example.flows
 
 import co.paralleluniverse.fibers.Suspendable
-import com.cgraph.contracts.states.graphableString
-import com.cgraph.contracts.states.uuid
+import com.cgraph.contract.graphableString
+import com.cgraph.contract.uuid
 import com.cgraph.core.services.graphService
 import com.cgraph.example.sample.memberIdForX500Name
 import com.cgraph.example.sample.queryCurrencyIdByIsoCode

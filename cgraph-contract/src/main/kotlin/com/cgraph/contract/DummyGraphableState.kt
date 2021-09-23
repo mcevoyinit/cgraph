@@ -1,4 +1,4 @@
-package com.cgraph.contracts.states
+package com.cgraph.contract
 
 import net.corda.core.contracts.BelongsToContract
 import net.corda.core.contracts.CommandData

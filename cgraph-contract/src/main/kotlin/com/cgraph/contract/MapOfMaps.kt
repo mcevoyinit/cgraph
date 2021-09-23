@@ -1,4 +1,4 @@
-package com.cgraph.contracts.states
+package com.cgraph.contract
 
 import java.util.*
 

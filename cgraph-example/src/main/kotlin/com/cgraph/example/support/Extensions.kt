@@ -1,4 +1,4 @@
-package com.cgraph.example.sample
+package com.cgraph.example.support
 
 import com.cgraph.core.services.CGraphService
 import com.cgraph.core.services.GraphQLRequestType
@@ -57,7 +57,7 @@ fun CGraphService.memberIdForX500Name(nodeName: String) =
     )
 
 fun CGraphService.findPartyForMemberCordaNodeName(nodeName: String) {
-    val cordaX500Name = performGraphQLRequest(
+    performGraphQLRequest(
         graphQlSelection = """
         query {
            queryMember(filter: { cordaNodeName: { eq: "$nodeName" } }) {

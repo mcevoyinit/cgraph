@@ -1,6 +1,6 @@
 package com.cgraph.example.braid
 
-import com.cgraph.contracts.states.graphableString
+import com.cgraph.contract.graphableString
 import com.cgraph.core.flows.DropGraphDataFlow
 import com.cgraph.core.flows.PostGraphQLFlow
 import com.cgraph.core.services.GraphQLRequestType

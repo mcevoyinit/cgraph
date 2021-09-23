@@ -1,4 +1,4 @@
-package com.cgraph.contracts.states
+package com.cgraph.contract
 
 import net.corda.core.contracts.LinearState
 import net.corda.core.serialization.CordaSerializable

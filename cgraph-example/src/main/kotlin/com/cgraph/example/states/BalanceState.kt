@@ -1,7 +1,7 @@
 package com.cgraph.example.states
 
-import com.cgraph.contracts.states.GraphableState
-import com.cgraph.contracts.states.MapOfMaps
+import com.cgraph.contract.GraphableState
+import com.cgraph.contract.MapOfMaps
 import net.corda.core.contracts.BelongsToContract
 import net.corda.core.contracts.UniqueIdentifier
 import net.corda.core.identity.AbstractParty

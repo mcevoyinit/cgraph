@@ -1,7 +1,7 @@
 package com.cgraph.core.services
 
-import com.cgraph.contracts.states.GraphableState
-import com.cgraph.contracts.states.MapOfMaps
+import com.cgraph.contract.GraphableState
+import com.cgraph.contract.MapOfMaps
 import com.cgraph.core.client.GQLClient
 import com.cgraph.core.mutations.GraphQLMutationGenerator
 import com.cgraph.core.mutations.TransactionType
@@ -17,7 +17,7 @@ import rx.Subscription
 /**
  * [CGraphService] is the heart of cgraph.
  *
- * This service detects new ledger entries of type GraphableState
+ * This service detects new ledger entries of type [GraphableState]
  * and transforms them by passing the result of the buildEntityMap() function into the mutation generator.
  *
  * [GraphQLMutationGenerator] generates a mutation based on the shape of the provided state property map.
@@ -126,8 +126,8 @@ class CGraphService(serviceHub: AppServiceHub) : SingletonSerializeAsToken() {
                             .toTypedArray()
                             .first()
                             .values
-                            .first() as List<MapOfMaps>
-                        res.first()
+                            .first() as List<*>
+                        res.first() as MapOfMaps?
                     }
                     else -> {
                         emptyMap()
@@ -150,4 +150,4 @@ class CGraphService(serviceHub: AppServiceHub) : SingletonSerializeAsToken() {
 fun ServiceHub.graphService() = cordaService(CGraphService::class.java)
 
 @CordaSerializable
-enum class GraphQLRequestType { QUERY, MUTATION, SUBSCRIPTION}
+enum class GraphQLRequestType { QUERY, MUTATION, SUBSCRIPTION }

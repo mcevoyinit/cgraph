@@ -13,7 +13,7 @@ cordapp {
 }
 
 dependencies {
-    // Kotlin
+/*    // Kotlin
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     // OkHttp
@@ -25,14 +25,13 @@ dependencies {
     // CGraph
     cordapp "io.cgraph:cgraph-core:1.0.0"
     cordapp "io.cgraph:cgraph-contract:1.0.0"
-    //cordapp project(":cgraph-contracts")
 
     // Corda dependencies
     cordaCompile "net.corda:corda-core:$corda_release_version"
     cordaCompile "net.corda:corda-jackson:$corda_release_version"
     cordaCompile "net.corda:corda-rpc:$corda_release_version"
     cordaCompile "net.corda:corda-node-api:$corda_release_version"
-    cordaRuntime "net.corda:corda:$corda_release_version"
+    cordaCompile "net.corda:corda:$corda_release_version"
     cordaCompile "net.corda:corda-node:$corda_release_version"
 
     // Testing.
@@ -41,5 +40,22 @@ dependencies {
     testImplementation "$corda_group:corda-node-driver:$corda_release_version"
     testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
     testImplementation "$junit_group:junit-jupiter-engine:$junit_version"
-    testImplementation "$junit_group:junit-jupiter-api:$junit_version"
+    testImplementation "$junit_group:junit-jupiter-api:$junit_version"*/
+
+    // Kotlin Dependencies
+    implementation "$kotlin_group:kotlin-stdlib-jdk8:$kotlin_version"
+
+    // Braid
+    implementation 'io.cordite.braid:braid-corda:5.0.0-RC09'
+
+    // Corda Development Dependencies
+    cordaCompile "$corda_group:corda-core:$corda_release_version"
+
+    // CGraph
+    cordapp "io.cgraph:cgraph-core:1.0.0"
+    cordapp "io.cgraph:cgraph-contract:1.0.0"
+
+    // Test Dependencies
+    testImplementation "$kotlin_group:kotlin-test:$kotlin_version"
+    testImplementation "$corda_group:corda-node-driver:$corda_release_version"
 }

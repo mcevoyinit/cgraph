@@ -1,9 +1,9 @@
 package com.cgraph.core.mutations
 
-import com.cgraph.contracts.states.GraphableState
-import com.cgraph.contracts.states.MapOfMaps
-import com.cgraph.contracts.states.property
-import com.cgraph.contracts.states.remove
+import com.cgraph.contract.GraphableState
+import com.cgraph.contract.MapOfMaps
+import com.cgraph.contract.property
+import com.cgraph.contract.remove
 import net.corda.core.contracts.ContractState
 import net.corda.core.contracts.StateAndRef
 import java.util.*
